@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="100" fill="#002868"/>
+  <rect x="0" y="160" width="512" height="42" fill="#BF0A30" opacity="0.85"/>
+  <rect x="0" y="246" width="512" height="42" fill="#BF0A30" opacity="0.85"/>
+  <rect x="0" y="332" width="512" height="42" fill="#BF0A30" opacity="0.85"/>
+  <rect x="0" y="0" width="210" height="200" rx="100 0 0 0" fill="#002868"/>
+  <g fill="#FFD700" font-size="34" font-family="serif" text-anchor="middle">
+    <text x="40"  y="52">★</text>  <text x="95"  y="52">★</text>
+    <text x="150" y="52">★</text>  <text x="205" y="52">★</text>
+    <text x="40"  y="106">★</text> <text x="95"  y="106">★</text>
+    <text x="150" y="106">★</text> <text x="205" y="106">★</text>
+    <text x="40"  y="160">★</text> <text x="95"  y="160">★</text>
+    <text x="150" y="160">★</text> <text x="205" y="160">★</text>
+  </g>
+  <text x="256" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif"
+        font-size="72" font-weight="900" fill="#FFD700" letter-spacing="4">CivicsQ</text>
+  <text x="256" y="494" text-anchor="middle" font-family="system-ui, sans-serif"
+        font-size="26" fill="rgba(255,255,255,0.6)">U.S. Citizenship Quiz</text>
+</svg>
