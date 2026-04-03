@@ -66,12 +66,18 @@
         radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,40,104,0.7) 0%, transparent 60%),
         radial-gradient(ellipse 70% 50% at 80% 30%, rgba(40,0,80,0.4) 0%, transparent 55%),
         radial-gradient(ellipse 90% 70% at 50% 90%, rgba(0,20,60,0.6) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 40% at 70% 70%, rgba(191,10,48,0.08) 0%, transparent 45%),
-        url('./american-flag.png');
+        radial-gradient(ellipse 50% 40% at 70% 70%, rgba(191,10,48,0.08) 0%, transparent 45%);
       background-attachment: fixed;
-      background-size: auto, auto, auto, auto, cover;
-      background-position: center, center, center, center, center center;
-      background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+      position: relative;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url('./american-flag.png') center/cover no-repeat fixed;
+      opacity: 0.06;
+      z-index: 0;
+      pointer-events: none;
     }
 
     /* ============================================================
