@@ -1356,14 +1356,14 @@
     .pin-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,10,31,0.6);
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
+      background: rgba(0,10,31,0.85);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
       z-index: 200;
-      padding: 0 0 20px;
+      padding: 20px;
     }
     .pin-modal.hidden { display: none; }
     .pin-sheet {
@@ -1833,8 +1833,8 @@
 <section id="screen-profiles" class="screen" aria-label="Choose Profile">
   <div class="profile-hero">
     <span class="flag-emoji" aria-hidden="true">🇺🇸</span>
-    <h1>Who's Studying?</h1>
-    <p>Choose your profile to continue</p>
+    <h1>Welcome Back!</h1>
+    <p>Tap your profile to continue studying</p>
   </div>
   <div class="profile-grid" id="profile-grid">
     <!-- Populated by JS -->
@@ -1859,17 +1859,16 @@
 
 <!-- Create Profile Modal -->
 <div class="pin-modal hidden" id="create-modal">
-  <div class="pin-sheet">
-    <div class="pin-label" style="font-size:18px;font-weight:700;color:var(--white);margin-bottom:12px">New Profile</div>
-    <div class="emoji-picker" id="create-emoji-picker"></div>
-    <input class="glass-input" id="create-name" type="text" placeholder="Your name" maxlength="20" autocomplete="off" />
-    <div class="pin-label">Set a 4-digit PIN</div>
+  <div class="pin-sheet" style="max-width:340px">
+    <div class="pin-avatar">🇺🇸</div>
+    <div class="pin-name">Hello, Laura!</div>
+    <div class="pin-label">Set a 4-digit PIN to protect your progress</div>
     <div class="pin-dots" id="create-pin-dots">
       <div class="pin-dot"></div><div class="pin-dot"></div>
       <div class="pin-dot"></div><div class="pin-dot"></div>
     </div>
     <div class="pin-keypad" id="create-keypad"></div>
-    <button class="create-confirm" id="create-confirm" disabled onclick="confirmCreateProfile()">Create Profile</button>
+    <button class="create-confirm" id="create-confirm" disabled onclick="confirmCreateProfile()">Start Studying</button>
     <button class="pin-cancel" onclick="closeCreateModal()">Cancel</button>
   </div>
 </div>
@@ -3977,23 +3976,7 @@ function switchProfile() {
 function showCreateProfileModal() {
   _createEmoji = '🇺🇸';
   _createPin = '';
-  document.getElementById('create-name').value = '';
   document.getElementById('create-confirm').disabled = true;
-
-  // Emoji picker
-  const picker = document.getElementById('create-emoji-picker');
-  picker.innerHTML = '';
-  PROFILE_EMOJIS.forEach(e => {
-    const btn = document.createElement('button');
-    btn.className = 'emoji-pick' + (e === _createEmoji ? ' selected' : '');
-    btn.textContent = e;
-    btn.onclick = () => {
-      _createEmoji = e;
-      picker.querySelectorAll('.emoji-pick').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-    };
-    picker.appendChild(btn);
-  });
 
   updatePinDots('create-pin-dots', 0);
   buildKeypad('create-keypad',
@@ -4001,28 +3984,21 @@ function showCreateProfileModal() {
       if (_createPin.length >= 4) return;
       _createPin += digit;
       updatePinDots('create-pin-dots', _createPin.length);
-      validateCreateForm();
+      document.getElementById('create-confirm').disabled = _createPin.length !== 4;
     },
     () => {
       _createPin = _createPin.slice(0, -1);
       updatePinDots('create-pin-dots', _createPin.length);
-      validateCreateForm();
+      document.getElementById('create-confirm').disabled = _createPin.length !== 4;
     }
   );
 
-  document.getElementById('create-name').oninput = validateCreateForm;
   document.getElementById('create-modal').classList.remove('hidden');
-  setTimeout(() => document.getElementById('create-name').focus(), 350);
-}
-
-function validateCreateForm() {
-  const name = document.getElementById('create-name').value.trim();
-  document.getElementById('create-confirm').disabled = !(name.length > 0 && _createPin.length === 4);
 }
 
 async function confirmCreateProfile() {
-  const name = document.getElementById('create-name').value.trim();
-  if (!name || _createPin.length !== 4) return;
+  if (_createPin.length !== 4) return;
+  const name = 'Laura';
 
   const profile = {
     id: generateProfileId(),
