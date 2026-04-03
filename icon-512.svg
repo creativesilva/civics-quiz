@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="#002868"/>
+  <!-- Flag stripes -->
+  <rect x="50" y="70" width="412" height="26" fill="#BF0A30"/>
+  <rect x="50" y="96" width="412" height="26" fill="#FFFFFF"/>
+  <rect x="50" y="122" width="412" height="26" fill="#BF0A30"/>
+  <rect x="50" y="148" width="412" height="26" fill="#FFFFFF"/>
+  <rect x="50" y="174" width="412" height="26" fill="#BF0A30"/>
+  <rect x="50" y="200" width="412" height="26" fill="#FFFFFF"/>
+  <rect x="50" y="226" width="412" height="26" fill="#BF0A30"/>
+  <!-- Navy canton -->
+  <rect x="50" y="70" width="170" height="104" fill="#002868"/>
+  <!-- Stars in canton -->
+  <g fill="#FFFFFF" font-size="18" font-family="serif" text-anchor="middle">
+    <text x="72" y="95">★</text><text x="98" y="95">★</text><text x="124" y="95">★</text><text x="150" y="95">★</text><text x="176" y="95">★</text>
+    <text x="85" y="115">★</text><text x="111" y="115">★</text><text x="137" y="115">★</text><text x="163" y="115">★</text>
+    <text x="72" y="135">★</text><text x="98" y="135">★</text><text x="124" y="135">★</text><text x="150" y="135">★</text><text x="176" y="135">★</text>
+    <text x="85" y="155">★</text><text x="111" y="155">★</text><text x="137" y="155">★</text><text x="163" y="155">★</text>
+  </g>
+  <!-- "TEST" text -->
+  <text x="256" y="390" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif"
+        font-size="110" font-weight="900" fill="#FFD700" letter-spacing="8">TEST</text>
+  <!-- Subtitle -->
+  <text x="256" y="445" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif"
+        font-size="30" font-weight="600" fill="rgba(255,255,255,0.6)" letter-spacing="6">U.S. CIVICS</text>
+</svg>
