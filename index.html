@@ -140,6 +140,11 @@
        ============================================================ */
     #screen-home {
       background: transparent;
+      align-items: center;
+    }
+    #screen-home > * {
+      width: 100%;
+      max-width: 480px;
     }
 
     .home-hero {
@@ -520,7 +525,9 @@
     #screen-results {
       background: transparent;
       text-align: center;
+      align-items: center;
     }
+    #screen-results > * { width: 100%; max-width: 480px; }
 
     .results-content {
       flex: 1;
@@ -672,7 +679,9 @@
        ============================================================ */
     #screen-flashcard {
       background: transparent;
+      align-items: center;
     }
+    #screen-flashcard > * { width: 100%; max-width: 480px; }
 
     .flashcard-progress {
       padding: 10px 20px 0;
@@ -836,7 +845,9 @@
        ============================================================ */
     #screen-speed {
       background: transparent;
+      align-items: center;
     }
+    #screen-speed > * { width: 100%; max-width: 480px; }
 
     .speed-header {
       display: flex;
@@ -975,7 +986,9 @@
        ============================================================ */
     #screen-category {
       background: transparent;
+      align-items: center;
     }
+    #screen-category > * { width: 100%; max-width: 480px; }
 
     .category-grid {
       display: flex;
@@ -1275,24 +1288,38 @@
     .profile-hero {
       text-align: center;
       padding: 48px 24px 24px;
+      flex-shrink: 0;
     }
     .profile-hero .flag-emoji { font-size: 56px; display: block; margin-bottom: 10px; }
     .profile-hero h1 { font-size: 24px; font-weight: 800; color: var(--white); }
     .profile-hero p { font-size: 14px; color: rgba(255,255,255,0.55); margin-top: 6px; }
 
+    #screen-profiles {
+      justify-content: center;
+      align-items: center;
+    }
+
     .profile-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 14px;
       padding: 0 18px 32px;
+      width: 100%;
+      max-width: 440px;
     }
+    .profile-grid > * {
+      width: calc(50% - 7px);
+      min-width: 140px;
+    }
+
     .profile-card {
       background: var(--glass-bg);
       -webkit-backdrop-filter: var(--glass-blur);
       backdrop-filter: var(--glass-blur);
       border: var(--glass-border);
       border-radius: var(--radius);
-      padding: 20px 14px;
+      padding: 24px 16px;
       text-align: center;
       cursor: pointer;
       transition: transform 0.22s var(--ease-out), background 0.22s, box-shadow 0.22s;
@@ -1310,7 +1337,7 @@
       background: transparent;
       border: 2px dashed rgba(255,255,255,0.18);
       border-radius: var(--radius);
-      padding: 20px 14px;
+      padding: 24px 16px;
       text-align: center;
       cursor: pointer;
       transition: transform 0.22s var(--ease-out), border-color 0.22s;
@@ -1555,6 +1582,10 @@
     /* ============================================================
        PROGRESS SCREEN
        ============================================================ */
+    #screen-progress {
+      align-items: center;
+    }
+    #screen-progress > * { width: 100%; max-width: 480px; }
     .progress-screen-content {
       flex: 1;
       overflow-y: auto;
