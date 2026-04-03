@@ -684,11 +684,12 @@
     #screen-flashcard > * { width: 100%; max-width: 480px; }
 
     .flashcard-progress {
-      padding: 10px 20px 0;
+      padding: 6px 20px 0;
       text-align: center;
-      font-size: 13px;
-      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
       font-weight: 600;
+      flex-shrink: 0;
     }
 
     .flashcard-scene {
@@ -696,15 +697,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px 18px;
+      padding: 10px 18px;
       perspective: 1000px;
       cursor: pointer;
+      min-height: 0;
     }
 
     .flashcard-wrap {
       width: 100%;
       max-width: 420px;
-      height: 280px;
+      height: 100%;
+      max-height: 320px;
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
@@ -715,63 +718,76 @@
       position: absolute;
       inset: 0;
       border-radius: var(--radius-lg);
-      padding: 24px 22px;
+      padding: 20px 20px;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: var(--glass-shadow), var(--glass-inset);
+      box-shadow:
+        0 8px 40px rgba(0,0,0,0.3),
+        0 0 0 1px rgba(255,255,255,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .flashcard-face::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.04) 100%);
+      pointer-events: none;
     }
     .flashcard-front {
-      background: rgba(26,58,143,0.45);
-      -webkit-backdrop-filter: var(--glass-blur);
-      backdrop-filter: var(--glass-blur);
-      border: 1px solid rgba(255,215,0,0.2);
+      background: rgba(20,50,120,0.5);
+      -webkit-backdrop-filter: blur(40px) saturate(200%);
+      backdrop-filter: blur(40px) saturate(200%);
+      border: 1px solid rgba(255,255,255,0.12);
     }
     .flashcard-back {
-      background: rgba(122,0,32,0.45);
-      -webkit-backdrop-filter: var(--glass-blur);
-      backdrop-filter: var(--glass-blur);
-      border: 1px solid rgba(255,215,0,0.2);
+      background: rgba(100,0,25,0.5);
+      -webkit-backdrop-filter: blur(40px) saturate(200%);
+      backdrop-filter: blur(40px) saturate(200%);
+      border: 1px solid rgba(255,255,255,0.12);
       transform: rotateY(180deg);
     }
 
     .fc-category {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       color: var(--gold);
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 4px;
     }
     .fc-number {
-      font-size: 13px;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 10px;
     }
     .fc-question {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 700;
       color: var(--white);
       line-height: 1.4;
       flex: 1;
     }
     .fc-tap-hint {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
       text-align: right;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .fc-answer-label {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       color: rgba(255,215,0,0.8);
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .fc-answer {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--white);
       line-height: 1.5;
@@ -793,49 +809,58 @@
       font-style: italic;
     }
 
+    /* Flashcard bottom controls — tight, no clipping */
+    .fc-bottom-area {
+      flex-shrink: 0;
+      padding: 0 18px;
+      padding-bottom: max(12px, var(--safe-bot));
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
     .flashcard-controls {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 0 18px 16px;
+      gap: 10px;
+      padding: 0;
     }
     .fc-nav-btn {
-      width: 52px; height: 52px;
+      width: 46px; height: 46px;
       border-radius: 50%;
-      border: var(--glass-border);
-      background: var(--glass-bg);
-      -webkit-backdrop-filter: var(--glass-blur);
-      backdrop-filter: var(--glass-blur);
+      border: none;
+      background: rgba(255,255,255,0.08);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
       color: var(--white);
-      font-size: 22px;
+      font-size: 20px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.2s var(--ease-out), transform 0.15s;
       -webkit-tap-highlight-color: transparent;
       flex-shrink: 0;
-      box-shadow: var(--glass-shadow), var(--glass-inset);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.15);
     }
-    .fc-nav-btn:active { transform: scale(0.9); background: var(--glass-bg-hover); }
+    .fc-nav-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.15); }
 
     .fc-known-btn {
       flex: 1;
-      padding: 14px;
-      border-radius: var(--radius-sm);
-      border: var(--glass-border);
-      background: var(--glass-bg);
-      -webkit-backdrop-filter: var(--glass-blur);
-      backdrop-filter: var(--glass-blur);
-      color: var(--white);
+      padding: 12px;
+      border-radius: 99px;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      color: rgba(255,255,255,0.8);
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s var(--ease-out), border-color 0.2s, transform 0.15s;
+      transition: background 0.2s var(--ease-out), color 0.2s, transform 0.15s;
       -webkit-tap-highlight-color: transparent;
-      box-shadow: var(--glass-inset);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .fc-known-btn.known {
-      background: rgba(26,127,55,0.2);
-      border-color: var(--green);
+      background: rgba(26,127,55,0.25);
       color: #5CD68A;
     }
     .fc-known-btn:active { transform: scale(0.97); }
@@ -1224,26 +1249,26 @@
        FLASHCARD REVEAL BUTTON
        ============================================================ */
     .fc-reveal-wrap {
-      padding: 0 18px 10px;
+      padding: 0;
     }
     .fc-reveal-btn {
-      background: rgba(191,10,48,0.5);
-      -webkit-backdrop-filter: var(--glass-blur);
-      backdrop-filter: var(--glass-blur);
+      background: rgba(255,255,255,0.1);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
       color: var(--white);
-      border: 1px solid rgba(191,10,48,0.4);
-      border-radius: 14px;
-      padding: 17px;
-      font-size: 17px;
+      border: none;
+      border-radius: 99px;
+      padding: 14px;
+      font-size: 15px;
       font-weight: 800;
       width: 100%;
       cursor: pointer;
-      transition: transform 0.2s var(--ease-out), background 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s var(--ease-out), background 0.2s;
       -webkit-tap-highlight-color: transparent;
-      letter-spacing: 0.2px;
-      box-shadow: 0 4px 16px rgba(191,10,48,0.25), var(--glass-inset);
+      letter-spacing: 0.3px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 16px rgba(0,0,0,0.15);
     }
-    .fc-reveal-btn:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(191,10,48,0.3); }
+    .fc-reveal-btn:active { transform: scale(0.97); }
     .fc-reveal-btn.showing-question {
       background: rgba(255,255,255,0.1);
       border: 1.5px solid rgba(255,255,255,0.25);
@@ -1839,10 +1864,10 @@
       .fc-answer-label { font-size: 10px; margin-bottom: 6px; }
       .fc-answer { font-size: 15px; }
       .fc-variable-note { font-size: 10px; margin-top: 6px; }
-      .fc-reveal-wrap { padding: 0 14px 6px; }
+      .fc-reveal-wrap { padding: 0; }
       .fc-reveal-btn { padding: 13px; font-size: 15px; border-radius: 12px; }
-      .swipe-hint { padding: 0 0 4px; font-size: 11px; }
-      .flashcard-controls { padding: 0 14px 8px; gap: 10px; }
+      .flashcard-controls { gap: 8px; }
+      .fc-bottom-area { padding: 0 14px; padding-bottom: max(8px, var(--safe-bot)); gap: 6px; }
       .fc-nav-btn { width: 44px; height: 44px; font-size: 18px; }
       .fc-known-btn { padding: 10px; font-size: 13px; }
 
@@ -2068,20 +2093,19 @@
     </div>
   </div>
 
-  <div class="fc-reveal-wrap">
-    <button class="fc-reveal-btn" id="fc-reveal-btn" onclick="flipCard()" aria-label="Reveal answer">
-      Reveal Answer
-    </button>
-  </div>
-
-  <div class="swipe-hint">← swipe or use arrows to navigate →</div>
-
-  <div class="flashcard-controls">
-    <button class="fc-nav-btn" onclick="prevCard()" aria-label="Previous card">‹</button>
-    <button class="fc-known-btn" id="fc-known-btn" onclick="toggleKnown()">
-      ☆ Mark as Known
-    </button>
-    <button class="fc-nav-btn" onclick="nextCard()" aria-label="Next card">›</button>
+  <div class="fc-bottom-area">
+    <div class="fc-reveal-wrap">
+      <button class="fc-reveal-btn" id="fc-reveal-btn" onclick="flipCard()" aria-label="Reveal answer">
+        Reveal Answer
+      </button>
+    </div>
+    <div class="flashcard-controls">
+      <button class="fc-nav-btn" onclick="prevCard()" aria-label="Previous card">‹</button>
+      <button class="fc-known-btn" id="fc-known-btn" onclick="toggleKnown()">
+        ☆ Mark as Known
+      </button>
+      <button class="fc-nav-btn" onclick="nextCard()" aria-label="Next card">›</button>
+    </div>
   </div>
 </section>
 
