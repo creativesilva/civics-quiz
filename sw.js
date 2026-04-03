@@ -3,13 +3,14 @@
    Caches all core assets for full offline support
    ============================================================= */
 
-const CACHE_NAME = 'civics-quiz-v4';
+const CACHE_NAME = 'civics-quiz-v5';
 const FILES_TO_CACHE = [
   './index.html',
   './manifest.json',
   './sw.js',
   './icon-192.svg',
-  './icon-512.svg'
+  './icon-512.svg',
+  './american-flag.png'
 ];
 
 /* Install: pre-cache all files */
