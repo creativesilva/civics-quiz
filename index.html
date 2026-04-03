@@ -52,7 +52,6 @@
       -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
       background: #000a1f;
-      border-radius: 44px;
     }
     body {
       height: 100%;
@@ -72,14 +71,23 @@
       background-attachment: fixed;
       position: relative;
     }
-    body::after {
-      content: '';
+    /* Flag background layer — real element so backdrop-filter can blur it */
+    #flag-bg {
       position: fixed;
       inset: 0;
-      background: url('./american-flag.png') center/cover no-repeat fixed;
-      opacity: 0.06;
+      background: url('./american-flag.png') center/cover no-repeat;
+      opacity: 0.08;
       z-index: 0;
       pointer-events: none;
+    }
+
+    /* App frame — rounded corners that mask the viewport edges */
+    #app-frame {
+      position: fixed;
+      inset: 0;
+      border-radius: 48px;
+      overflow: hidden;
+      z-index: 1;
     }
 
     /* ============================================================
@@ -88,8 +96,7 @@
     .screen {
       display: none;
       flex-direction: column;
-      height: 100dvh;
-      height: 100vh;
+      height: 100%;
       padding-top: var(--safe-top);
       padding-bottom: var(--safe-bot);
       animation: fadeIn 0.35s var(--ease-out);
@@ -161,12 +168,12 @@
 
     .home-hero {
       text-align: center;
-      padding: 36px 24px 24px;
+      padding: 14px 24px 10px;
     }
     .home-hero .flag-emoji {
-      font-size: 64px;
+      font-size: 48px;
       display: block;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
       animation: wave 2.5s ease-in-out infinite;
       transform-origin: 70% 90%;
     }
@@ -178,7 +185,7 @@
       80%       { transform: rotate(-2deg); }
     }
     .home-hero h1 {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--white);
       line-height: 1.2;
@@ -186,8 +193,8 @@
     }
     .home-hero h1 span { color: var(--gold); }
     .home-hero p {
-      margin-top: 8px;
-      font-size: 15px;
+      margin-top: 4px;
+      font-size: 14px;
       color: rgba(255,255,255,0.75);
       font-weight: 500;
     }
@@ -196,7 +203,7 @@
       display: flex;
       justify-content: center;
       gap: 6px;
-      margin-top: 14px;
+      margin-top: 8px;
     }
     .star-dot {
       width: 8px; height: 8px;
@@ -217,8 +224,8 @@
     .mode-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      padding: 0 18px 18px;
+      gap: 10px;
+      padding: 0 16px 10px;
     }
     .mode-card {
       background: var(--glass-bg);
@@ -226,7 +233,7 @@
       backdrop-filter: var(--glass-blur);
       border: var(--glass-border);
       border-radius: var(--radius);
-      padding: 20px 14px;
+      padding: 14px 12px;
       text-align: center;
       cursor: pointer;
       transition: transform 0.22s var(--ease-out), background 0.22s, border-color 0.22s, box-shadow 0.22s;
@@ -240,9 +247,9 @@
       box-shadow: var(--glass-glow), var(--glass-shadow);
     }
     .mode-card .mode-icon {
-      font-size: 38px;
+      font-size: 32px;
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .mode-card .mode-title {
       font-size: 15px;
@@ -264,7 +271,7 @@
     .home-footer {
       margin-top: auto;
       text-align: center;
-      padding: 12px 20px 20px;
+      padding: 6px 16px 12px;
     }
     .progress-summary {
       background: var(--glass-bg);
@@ -1553,17 +1560,17 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.15s;
       -webkit-tap-highlight-color: transparent;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
       font-family: var(--font);
     }
     .profile-indicator:active { transform: scale(0.96); background: var(--glass-bg-hover); }
     .pi-emoji { font-size: 22px; }
     .pi-name { font-size: 13px; font-weight: 600; color: var(--white); }
-    .pi-switch { font-size: 11px; color: var(--gold); font-weight: 600; margin-left: 4px; }
+    .pi-switch { display: none; }
 
     /* Mastery progress on home */
     .mastery-bar-wrap {
-      padding: 0 18px 14px;
+      padding: 0 16px 8px;
       text-align: center;
     }
     .mastery-bar-label {
@@ -1594,9 +1601,9 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      width: calc(100% - 36px);
-      margin: 0 18px 14px;
-      padding: 14px 18px;
+      width: calc(100% - 32px);
+      margin: 0 16px 8px;
+      padding: 12px 16px;
       background: var(--glass-bg);
       -webkit-backdrop-filter: var(--glass-blur);
       backdrop-filter: var(--glass-blur);
@@ -1909,6 +1916,9 @@
 <!-- ================================================================
      CONFETTI CANVAS
      ================================================================ -->
+<div id="flag-bg"></div>
+<div id="app-frame">
+
 <canvas id="confetti-canvas"></canvas>
 
 <!-- ================================================================
@@ -1962,11 +1972,10 @@
      ================================================================ -->
 <section id="screen-home" class="screen" role="main">
   <div class="home-hero">
-    <button class="profile-indicator" id="profile-indicator" onclick="switchProfile()">
+    <div class="profile-indicator" id="profile-indicator">
       <span class="pi-emoji" id="pi-emoji">🇺🇸</span>
       <span class="pi-name" id="pi-name">Player</span>
-      <span class="pi-switch">Switch</span>
-    </button>
+    </div>
     <span class="flag-emoji" aria-hidden="true">🇺🇸</span>
     <h1>U.S. <span>Civics</span> Quiz</h1>
     <p>Prepare for Your Citizenship Test</p>
@@ -2287,6 +2296,8 @@
   <button class="ib-btn" onclick="installApp()" aria-label="Install app">Install</button>
   <button class="ib-close" onclick="dismissInstall()" aria-label="Dismiss">✕</button>
 </div>
+
+</div><!-- end #app-frame -->
 
 <!-- ================================================================
      SVG ICON GENERATION SCRIPT (runs once, creates icon SVGs)
@@ -4434,30 +4445,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // Migrate old single-user data to profile system
   migrateOldData();
 
-  const profiles = getProfiles();
-  const activeId = localStorage.getItem('civics_active_profile');
+  let profiles = getProfiles();
 
+  // Auto-create Laura's profile if none exist
   if (profiles.length === 0) {
-    // No profiles at all — show create screen
-    showScreen('profiles');
-    renderProfileGrid();
-  } else if (profiles.length === 1 && !profiles[0].pinHash) {
-    // Single migrated user with no PIN — auto-login
-    selectProfile(profiles[0]);
-  } else if (activeId) {
-    // Try to resume last profile
-    const last = profiles.find(p => p.id === activeId);
-    if (last && !last.pinHash) {
-      selectProfile(last);
-    } else {
-      // Has PIN or not found — show selector
-      showScreen('profiles');
-      renderProfileGrid();
-    }
-  } else {
-    showScreen('profiles');
-    renderProfileGrid();
+    const id = generateProfileId();
+    const profile = {
+      id, name: 'Laura', emoji: '🇺🇸', pinHash: null,
+      knownCards: [], masteredCards: [], correctStreak: {},
+      bestScore: null, sessionHistory: [], createdAt: Date.now()
+    };
+    const all = getProfiles();
+    all.push(profile);
+    localStorage.setItem('civics_profiles', JSON.stringify(all));
+    profiles = [profile];
   }
+
+  // Always auto-login first profile (Laura)
+  selectProfile(profiles[0]);
 });
 
 /* Keyboard navigation for flashcards */

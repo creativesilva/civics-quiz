@@ -3,7 +3,7 @@
    Caches all core assets for full offline support
    ============================================================= */
 
-const CACHE_NAME = 'civics-quiz-v5';
+const CACHE_NAME = 'civics-quiz-v6';
 const FILES_TO_CACHE = [
   './index.html',
   './manifest.json',
