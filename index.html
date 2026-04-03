@@ -1594,11 +1594,6 @@
       flex-direction: column;
       gap: 22px;
     }
-    .pg-stats-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-    }
     .pg-stat-card {
       background: var(--glass-bg);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -1732,6 +1727,58 @@
     .pg-sess-date { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
     .pg-sess-score { font-size: 20px; font-weight: 800; color: var(--gold); }
     .pg-sess-score-label { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+    /* Metric question cards (missed, fastest, slowest) */
+    .pg-q-card {
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      backdrop-filter: blur(16px) saturate(160%);
+      border: var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: var(--glass-inset);
+    }
+    .pg-q-rank {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,215,0,0.15);
+      border: 1px solid rgba(255,215,0,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: var(--gold);
+      flex-shrink: 0;
+    }
+    .pg-q-rank.bad { background: rgba(191,10,48,0.15); border-color: rgba(191,10,48,0.3); color: #FF8FAB; }
+    .pg-q-info { flex: 1; min-width: 0; }
+    .pg-q-text {
+      font-size: 13px; font-weight: 600; color: var(--white);
+      line-height: 1.35;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .pg-q-meta {
+      font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 3px;
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .pg-q-meta span { white-space: nowrap; }
+    .pg-q-stat {
+      font-size: 14px; font-weight: 800; flex-shrink: 0; text-align: right; min-width: 50px;
+    }
+    .pg-q-stat.time-fast { color: var(--green); }
+    .pg-q-stat.time-slow { color: #FF8FAB; }
+    .pg-q-stat.miss-count { color: #FF8FAB; }
+
+    /* Stats row — 4 columns on wider, 2x2 on mobile */
+    .pg-stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 420px) {
+      .pg-stats-row { grid-template-columns: 1fr 1fr; }
+    }
 
     /* ============================================================
        COMPACT LAYOUT — iPhone SE and other small screens
@@ -2133,7 +2180,7 @@
 <section id="screen-progress" class="screen" aria-label="Your Progress">
   <header class="header">
     <button class="back-btn" onclick="goHome()" aria-label="Go home">‹</button>
-    <h2>Your Progress</h2>
+    <h2>Laura's Dashboard</h2>
     <div class="header-right">📊</div>
   </header>
   <div class="progress-screen-content">
@@ -2148,6 +2195,14 @@
     </div>
 
     <div class="pg-section">
+      <h3 class="pg-section-title">Response Time</h3>
+      <div class="pg-chart-wrap">
+        <canvas id="pg-time-chart" width="600" height="200"></canvas>
+        <div class="pg-empty-state hidden" id="pg-time-empty">Complete a practice test to see your response times.</div>
+      </div>
+    </div>
+
+    <div class="pg-section">
       <h3 class="pg-section-title">Category Accuracy</h3>
       <div id="pg-category-bars"></div>
       <div class="pg-empty-state hidden" id="pg-cats-empty">Take practice tests to see category breakdowns.</div>
@@ -2156,6 +2211,24 @@
     <div class="pg-section" id="pg-focus-section">
       <h3 class="pg-section-title">Areas to Focus</h3>
       <div id="pg-focus-list"></div>
+    </div>
+
+    <div class="pg-section">
+      <h3 class="pg-section-title">Most Missed Questions</h3>
+      <div id="pg-missed-list"></div>
+      <div class="pg-empty-state hidden" id="pg-missed-empty">No missed questions yet. Keep studying!</div>
+    </div>
+
+    <div class="pg-section">
+      <h3 class="pg-section-title">Fastest Answers</h3>
+      <div id="pg-fastest-list"></div>
+      <div class="pg-empty-state hidden" id="pg-fastest-empty">Complete practice tests to see your fastest correct answers.</div>
+    </div>
+
+    <div class="pg-section">
+      <h3 class="pg-section-title">Slowest Answers</h3>
+      <div id="pg-slowest-list"></div>
+      <div class="pg-empty-state hidden" id="pg-slowest-empty">Complete practice tests to see which questions take longest.</div>
     </div>
 
     <div class="pg-section">
@@ -2957,6 +3030,7 @@ function renderQuestion(containerId, q, onAnswer, isSpeed = false) {
   choicesList.className = 'choices-list';
 
   let answered = false;
+  const _qStartTime = Date.now();
 
   choices.forEach((choice, i) => {
     const btn = document.createElement('button');
@@ -2967,6 +3041,7 @@ function renderQuestion(containerId, q, onAnswer, isSpeed = false) {
     btn.onclick = () => {
       if (answered) return;
       answered = true;
+      const _responseMs = Date.now() - _qStartTime;
 
       const isCorrect = choice === q.primary;
 
@@ -3001,12 +3076,13 @@ function renderQuestion(containerId, q, onAnswer, isSpeed = false) {
 
       // Speed: auto-advance after short delay
       if (isSpeed) {
-        setTimeout(() => onAnswer(isCorrect, false), 600);
+        setTimeout(() => onAnswer(isCorrect, false, _responseMs), 600);
       }
 
       if (!isSpeed) {
         nextBtn._ready = true;
         nextBtn._wasCorrect = isCorrect;
+        nextBtn._responseMs = _responseMs;
       }
     };
 
@@ -3032,7 +3108,7 @@ function renderQuestion(containerId, q, onAnswer, isSpeed = false) {
   nextBtn.style.marginTop = 'auto';
   if (!isSpeed) {
     nextBtn.onclick = () => {
-      if (nextBtn._ready) onAnswer(nextBtn._wasCorrect, false);
+      if (nextBtn._ready) onAnswer(nextBtn._wasCorrect, false, nextBtn._responseMs);
     };
   }
   container.appendChild(nextBtn);
@@ -3092,13 +3168,13 @@ function renderPracticeQuestion() {
 
   let lastAnswerCorrect = null;
 
-  renderQuestion('practice-question-container', q, (isCorrect, isVariable) => {
+  renderQuestion('practice-question-container', q, (isCorrect, isVariable, responseMs) => {
     if (isVariable || isCorrect === true) {
       state.practiceScore++;
-      state.practiceResults.push({ id: q.id, category: q.category, correct: true });
+      state.practiceResults.push({ id: q.id, category: q.category, correct: true, ms: responseMs || 0 });
       if (!isVariable) checkMastery(q.id, true);
     } else if (isCorrect === false) {
-      state.practiceResults.push({ id: q.id, category: q.category, correct: false });
+      state.practiceResults.push({ id: q.id, category: q.category, correct: false, ms: responseMs || 0 });
       checkMastery(q.id, false);
     }
     // null = "Continue" pressed after variable or feedback shown
@@ -3552,9 +3628,33 @@ function renderProgressScreen() {
 
   renderProgressStats(practice, speed, all);
   renderScoreChart(practice);
+  renderResponseTimeChart(practice);
   renderCategoryBreakdown(practice);
   renderFocusAreas(practice);
+  renderMostMissed(practice);
+  renderFastestAnswers(practice);
+  renderSlowestAnswers(practice);
   renderSessionList(all);
+}
+
+function getAllQuestionResults(practice) {
+  const map = {};
+  practice.forEach(session => {
+    if (!session.questions) return;
+    session.questions.forEach(q => {
+      if (!map[q.id]) map[q.id] = { id: q.id, category: q.category, attempts: 0, correct: 0, wrong: 0, times: [] };
+      map[q.id].attempts++;
+      if (q.correct) map[q.id].correct++;
+      else map[q.id].wrong++;
+      if (q.ms && q.ms > 0) map[q.id].times.push(q.ms);
+    });
+  });
+  return map;
+}
+
+function formatMs(ms) {
+  if (ms < 1000) return ms + 'ms';
+  return (ms / 1000).toFixed(1) + 's';
 }
 
 function renderProgressStats(practice, speed, all) {
@@ -3563,7 +3663,12 @@ function renderProgressStats(practice, speed, all) {
   const avgScore = practice.length > 0
     ? (practice.reduce((s, p) => s + p.score, 0) / practice.length).toFixed(1)
     : '--';
-  const knownPct = Math.round((state.knownCards.size / 100) * 100);
+  const masteredPct = Math.round((state.masteredCards.size / 100) * 100);
+
+  // Average response time
+  let allTimes = [];
+  practice.forEach(s => { if (s.questions) s.questions.forEach(q => { if (q.ms > 0) allTimes.push(q.ms); }); });
+  const avgTime = allTimes.length > 0 ? formatMs(Math.round(allTimes.reduce((a,b)=>a+b,0) / allTimes.length)) : '--';
 
   el.innerHTML = `
     <div class="pg-stat-card">
@@ -3575,8 +3680,12 @@ function renderProgressStats(practice, speed, all) {
       <div class="pg-stat-label">Avg Score</div>
     </div>
     <div class="pg-stat-card">
-      <div class="pg-stat-num">${knownPct}%</div>
-      <div class="pg-stat-label">Cards Known</div>
+      <div class="pg-stat-num">${masteredPct}%</div>
+      <div class="pg-stat-label">Mastered</div>
+    </div>
+    <div class="pg-stat-card">
+      <div class="pg-stat-num">${avgTime}</div>
+      <div class="pg-stat-label">Avg Time</div>
     </div>
   `;
 }
@@ -3707,6 +3816,223 @@ function renderScoreChart(practice) {
   });
 }
 
+function renderResponseTimeChart(practice) {
+  const canvas = document.getElementById('pg-time-chart');
+  const emptyEl = document.getElementById('pg-time-empty');
+
+  // Collect avg response time per session
+  const sessionAvgs = [];
+  practice.forEach(s => {
+    if (!s.questions) return;
+    const times = s.questions.filter(q => q.ms && q.ms > 0).map(q => q.ms);
+    if (times.length > 0) sessionAvgs.push(Math.round(times.reduce((a,b)=>a+b,0) / times.length));
+  });
+
+  if (sessionAvgs.length === 0) {
+    canvas.style.display = 'none';
+    emptyEl.classList.remove('hidden');
+    return;
+  }
+  canvas.style.display = 'block';
+  emptyEl.classList.add('hidden');
+
+  const recent = sessionAvgs.slice(-20);
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const w = rect.width - 24;
+  const h = 160;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, w, h);
+
+  const padL = 38, padR = 10, padT = 12, padB = 28;
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+  const maxMs = Math.max(...recent, 5000);
+  const ceil = Math.ceil(maxMs / 5000) * 5000;
+
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  for (let v = 0; v <= ceil; v += Math.max(1000, Math.round(ceil / 4))) {
+    const y = padT + chartH - (v / ceil) * chartH;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '10px -apple-system, system-ui, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText((v/1000).toFixed(0) + 's', padL - 5, y + 3);
+  }
+
+  const points = recent.map((ms, i) => ({
+    x: padL + (recent.length === 1 ? chartW / 2 : (i / (recent.length - 1)) * chartW),
+    y: padT + chartH - (ms / ceil) * chartH,
+    ms
+  }));
+
+  // Area
+  if (points.length > 1) {
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      const cpx = (points[i-1].x + points[i].x) / 2;
+      ctx.quadraticCurveTo(cpx, points[i-1].y, (cpx + points[i].x) / 2, (points[i-1].y + points[i].y) / 2);
+      if (i === points.length - 1) ctx.quadraticCurveTo(cpx, points[i].y, points[i].x, points[i].y);
+    }
+    ctx.lineTo(points[points.length-1].x, padT + chartH);
+    ctx.lineTo(points[0].x, padT + chartH);
+    ctx.closePath();
+    const grad = ctx.createLinearGradient(0, padT, 0, padT + chartH);
+    grad.addColorStop(0, 'rgba(90,205,255,0.2)');
+    grad.addColorStop(1, 'rgba(90,205,255,0.02)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      const cpx = (points[i-1].x + points[i].x) / 2;
+      ctx.quadraticCurveTo(cpx, points[i-1].y, (cpx + points[i].x) / 2, (points[i-1].y + points[i].y) / 2);
+      if (i === points.length - 1) ctx.quadraticCurveTo(cpx, points[i].y, points[i].x, points[i].y);
+    }
+    ctx.strokeStyle = '#5ACDFF';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+  }
+
+  // Dots
+  points.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#5ACDFF';
+    ctx.fill();
+    ctx.strokeStyle = '#001a4d';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+
+  // X labels
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  ctx.font = '10px -apple-system, system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  const step = Math.max(1, Math.floor(points.length / 6));
+  points.forEach((p, i) => {
+    if (i % step === 0 || i === points.length - 1) ctx.fillText('#' + (i+1), p.x, padT + chartH + 16);
+  });
+}
+
+function renderMostMissed(practice) {
+  const el = document.getElementById('pg-missed-list');
+  const emptyEl = document.getElementById('pg-missed-empty');
+  el.innerHTML = '';
+
+  const qMap = getAllQuestionResults(practice);
+  const missed = Object.values(qMap)
+    .filter(q => q.wrong > 0)
+    .sort((a, b) => b.wrong - a.wrong || (a.correct/a.attempts) - (b.correct/b.attempts))
+    .slice(0, 8);
+
+  if (missed.length === 0) { emptyEl.classList.remove('hidden'); return; }
+  emptyEl.classList.add('hidden');
+
+  missed.forEach((data, i) => {
+    const q = questions.find(qq => qq.id === data.id);
+    if (!q) return;
+    const pct = Math.round((data.correct / data.attempts) * 100);
+    const card = document.createElement('div');
+    card.className = 'pg-q-card';
+    card.innerHTML = `
+      <div class="pg-q-rank bad">${i + 1}</div>
+      <div class="pg-q-info">
+        <div class="pg-q-text">${q.question}</div>
+        <div class="pg-q-meta">
+          <span>${data.wrong}x missed</span>
+          <span>${pct}% correct</span>
+          <span>${data.attempts} attempts</span>
+        </div>
+      </div>
+      <div class="pg-q-stat miss-count">${data.wrong}x</div>
+    `;
+    el.appendChild(card);
+  });
+}
+
+function renderFastestAnswers(practice) {
+  const el = document.getElementById('pg-fastest-list');
+  const emptyEl = document.getElementById('pg-fastest-empty');
+  el.innerHTML = '';
+
+  const qMap = getAllQuestionResults(practice);
+  const withTimes = Object.values(qMap)
+    .filter(q => q.times.length > 0 && q.correct > 0)
+    .map(q => ({ ...q, avgMs: Math.round(q.times.reduce((a,b)=>a+b,0) / q.times.length) }))
+    .sort((a, b) => a.avgMs - b.avgMs)
+    .slice(0, 5);
+
+  if (withTimes.length === 0) { emptyEl.classList.remove('hidden'); return; }
+  emptyEl.classList.add('hidden');
+
+  withTimes.forEach((data, i) => {
+    const q = questions.find(qq => qq.id === data.id);
+    if (!q) return;
+    const card = document.createElement('div');
+    card.className = 'pg-q-card';
+    card.innerHTML = `
+      <div class="pg-q-rank">${i + 1}</div>
+      <div class="pg-q-info">
+        <div class="pg-q-text">${q.question}</div>
+        <div class="pg-q-meta">
+          <span>${data.correct}/${data.attempts} correct</span>
+          <span>${q.category}</span>
+        </div>
+      </div>
+      <div class="pg-q-stat time-fast">${formatMs(data.avgMs)}</div>
+    `;
+    el.appendChild(card);
+  });
+}
+
+function renderSlowestAnswers(practice) {
+  const el = document.getElementById('pg-slowest-list');
+  const emptyEl = document.getElementById('pg-slowest-empty');
+  el.innerHTML = '';
+
+  const qMap = getAllQuestionResults(practice);
+  const withTimes = Object.values(qMap)
+    .filter(q => q.times.length > 0)
+    .map(q => ({ ...q, avgMs: Math.round(q.times.reduce((a,b)=>a+b,0) / q.times.length) }))
+    .sort((a, b) => b.avgMs - a.avgMs)
+    .slice(0, 5);
+
+  if (withTimes.length === 0) { emptyEl.classList.remove('hidden'); return; }
+  emptyEl.classList.add('hidden');
+
+  withTimes.forEach((data, i) => {
+    const q = questions.find(qq => qq.id === data.id);
+    if (!q) return;
+    const pct = Math.round((data.correct / data.attempts) * 100);
+    const card = document.createElement('div');
+    card.className = 'pg-q-card';
+    card.innerHTML = `
+      <div class="pg-q-rank bad">${i + 1}</div>
+      <div class="pg-q-info">
+        <div class="pg-q-text">${q.question}</div>
+        <div class="pg-q-meta">
+          <span>${pct}% correct</span>
+          <span>${data.attempts} attempts</span>
+          <span>${q.category}</span>
+        </div>
+      </div>
+      <div class="pg-q-stat time-slow">${formatMs(data.avgMs)}</div>
+    `;
+    el.appendChild(card);
+  });
+}
+
 function renderCategoryBreakdown(practice) {
   const el = document.getElementById('pg-category-bars');
   const emptyEl = document.getElementById('pg-cats-empty');
@@ -3829,7 +4155,7 @@ function renderSessionList(sessions) {
         </div>
       </div>
       <div style="text-align:right">
-        <div class="pg-sess-score">${s.score}${isPractice ? '/10' : ''}</div>
+        <div class="pg-sess-score">${s.score}${isPractice ? '/' + (s.total || 20) : ''}</div>
         <div class="pg-sess-score-label">${isPractice ? (s.passed ? 'Passed' : 'Failed') : 'correct'}</div>
       </div>
     `;
