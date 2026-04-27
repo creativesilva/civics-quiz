@@ -1,11 +1,12 @@
 /* =============================================================
-   Service Worker — U.S. Civics Quiz PWA
+   Service Worker - U.S. Citizenship Study Guide PWA
    Caches all core assets for full offline support
    ============================================================= */
 
-const CACHE_NAME = 'civics-quiz-v6';
+const CACHE_NAME = 'civics-quiz-v7';
 const FILES_TO_CACHE = [
   './index.html',
+  './questions-2025.js',
   './manifest.json',
   './sw.js',
   './icon-192.svg',

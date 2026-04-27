@@ -1,13 +1,13 @@
-# U.S. Civics Quiz 🇺🇸
+# U.S. Citizenship Study Guide & U.S. Civics Quiz
 
-A Progressive Web App (PWA) for studying all 100 USCIS civics questions for the U.S. Citizenship Naturalization Test.
+A Progressive Web App (PWA) for studying the 128 USCIS civics questions from the 2025 U.S. Citizenship Naturalization Civics Test.
 
 ## Features
 
-- **Practice Test** — 10 random questions with multiple choice answers, just like the real interview
-- **Flashcards** — Study all 100 Q&As with a beautiful 3D card flip animation; mark cards as "Known" to track progress
+- **Practice Test** — 20 random questions with multiple choice answers; 12 correct is the 2025 passing target
+- **Flashcards** — Review all 128 questions with a 3D card flip animation; mark cards as "Known" to track progress
 - **Speed Round** — 60-second timed challenge with live scoring
-- **Study by Category** — 6 topic areas with per-category flashcards or mini quiz
+- **Study by Category** — 7 topic areas with per-category flashcards or mini quiz
 - **Offline support** — Full offline play via Service Worker caching
 - **Install to Home Screen** — Works as a native-feeling app on iOS and Android
 - **Progress tracking** — Known cards and best score saved to local storage
@@ -17,7 +17,8 @@ A Progressive Web App (PWA) for studying all 100 USCIS civics questions for the 
 
 ```
 civics-game/
-├── index.html      ← The entire app (single-file PWA)
+├── index.html      ← The app UI and behavior
+├── questions-2025.js ← 2025 USCIS question bank and California/current-answer updates
 ├── manifest.json   ← PWA manifest for installability
 ├── sw.js           ← Service worker for offline caching
 ├── icon-192.svg    ← App icon (192×192)
@@ -37,7 +38,7 @@ civics-game/
 
 3. **Upload all files**
    - Click "uploading an existing file" on the repository page
-   - Drag and drop all 5 files: `index.html`, `manifest.json`, `sw.js`, `icon-192.svg`, `icon-512.svg`
+   - Drag and drop the app files: `index.html`, `questions-2025.js`, `manifest.json`, `sw.js`, `american-flag.png`, `icon-192.svg`, `icon-512.svg`
    - Click "Commit changes"
 
 4. **Enable GitHub Pages**
@@ -66,13 +67,25 @@ civics-game/
 3. Tap **"Add to Home screen"** or **"Install app"**
 4. Follow the prompt
 
-## Variable Questions
+## Current and Location-Specific Answers
 
-Ten questions (#20, 23, 28, 29, 39, 40, 43, 44, 46, 47) have answers that change based on current officeholders or your specific state/district. In quiz and speed modes, these are displayed as free-point cards with a link to:
+Some questions have answers that change based on current officeholders or the applicant's state/district. This California build currently includes:
 
-**[uscis.gov → Find Study Materials](https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test)**
+- U.S. senators: Alex Padilla or Adam Schiff
+- U.S. representative: Jimmy Panetta for northern San Luis Obispo County
+- Speaker of the House: Mike Johnson
+- President: Donald Trump
+- Vice President: JD Vance
+- Chief Justice: John Roberts
+- California governor: Gavin Newsom
+- California capital: Sacramento
 
-Check this page regularly for the most current answers.
+These answers should be checked again near the interview date: **[USCIS test updates](https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates)**.
+
+## Source Notes
+
+- The 128-question bank comes from the USCIS 2025 civics test PDF in this folder.
+- Current and California-specific answers were checked against official USCIS, U.S. House, Senate/member, White House, Supreme Court, and California government sources in April 2026.
 
 ## Offline Use
 
@@ -80,7 +93,15 @@ Once you've opened the app once while connected to the internet, the Service Wor
 
 ## Privacy
 
-All data (known cards, best score) is stored exclusively in your browser's **localStorage** — nothing is sent to any server. No accounts, no tracking, no ads.
+Progress is stored in the browser first, then backed up to Firebase Firestore when an internet connection is available. No ads or analytics are enabled in this app.
+
+## Firebase Progress Backup
+
+This app is configured to back up Javier Garcia's progress to the Firebase project `civics-quiz-74e12` in the Firestore document `users/javier-garcia-rgci/progress/main`.
+
+The code is shaped for a future multi-user version: today it uses `AUTH_MODE = 'single-user'` and one `CURRENT_USER`, but the Firestore path already follows a per-user structure.
+
+Firestore must be enabled in Firebase Console. During setup, test mode is fine for quick testing, but security rules should be tightened before sharing the app publicly.
 
 ---
 

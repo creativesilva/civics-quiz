@@ -1,7 +1,7 @@
 {
-  "name": "U.S. Civics Test",
-  "short_name": "TEST",
-  "description": "Practice for the U.S. Citizenship Naturalization Test",
+  "name": "U.S. Citizenship Study Guide & U.S. Civics Quiz",
+  "short_name": "Citizenship",
+  "description": "Practice the 2025 U.S. Citizenship Naturalization Civics Test",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000a1f",

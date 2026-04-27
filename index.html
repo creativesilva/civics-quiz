@@ -6,11 +6,11 @@
   <meta name="theme-color" content="#000a1f" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="TEST" />
-  <meta name="description" content="Practice for the U.S. Citizenship Naturalization Test" />
+  <meta name="apple-mobile-web-app-title" content="Citizenship Guide" />
+  <meta name="description" content="Practice the 2025 U.S. Citizenship Naturalization Civics Test" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="apple-touch-icon" href="./icon-192.svg" />
-  <title>U.S. Civics Quiz 🇺🇸</title>
+  <title>U.S. Citizenship Study Guide &amp; U.S. Civics Quiz</title>
 
   <style>
     /* ============================================================
@@ -471,6 +471,11 @@
       background: rgba(191,10,48,0.2);
       color: #FF8FAB;
       border: 1px solid rgba(191,10,48,0.35);
+    }
+    .feedback-toast.variable-note {
+      background: rgba(255,215,0,0.14);
+      color: var(--gold);
+      border: 1px solid rgba(255,215,0,0.3);
     }
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(8px); }
@@ -1564,8 +1569,8 @@
       font-family: var(--font);
     }
     .profile-indicator:active { transform: scale(0.96); background: var(--glass-bg-hover); }
-    .pi-emoji { font-size: 22px; }
-    .pi-name { font-size: 13px; font-weight: 600; color: var(--white); }
+    .pi-emoji { font-size: 22px; flex-shrink: 0; }
+    .pi-name { font-size: 13px; font-weight: 600; color: var(--white); white-space: nowrap; }
     .pi-switch { display: none; }
 
     /* Mastery progress on home */
@@ -1602,7 +1607,8 @@
       align-items: center;
       gap: 12px;
       width: calc(100% - 32px);
-      margin: 0 16px 8px;
+      max-width: 448px;
+      margin: 0 0 8px;
       padding: 12px 16px;
       background: var(--glass-bg);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -1852,6 +1858,7 @@
       .mode-card .mode-desc { font-size: 11px; }
 
       /* Home footer */
+      .progress-link-btn { width: calc(100% - 28px); max-width: 452px; }
       .home-footer { padding: 6px 14px 10px; }
       .progress-summary { padding: 8px 12px; font-size: 12px; }
 
@@ -1938,7 +1945,7 @@
 <!-- PIN Entry Modal -->
 <div class="pin-modal hidden" id="pin-modal">
   <div class="pin-sheet">
-    <div class="pin-avatar" id="pin-avatar">🇺🇸</div>
+    <div class="pin-avatar" id="pin-avatar">👷</div>
     <div class="pin-name" id="pin-name">Player</div>
     <div class="pin-label">Enter your PIN</div>
     <div class="pin-error" id="pin-error"></div>
@@ -1954,8 +1961,8 @@
 <!-- Create Profile Modal -->
 <div class="pin-modal hidden" id="create-modal">
   <div class="pin-sheet" style="max-width:340px">
-    <div class="pin-avatar">🇺🇸</div>
-    <div class="pin-name">Hello, Laura!</div>
+    <div class="pin-avatar">👷</div>
+    <div class="pin-name">Hello, Javier Garcia - CEO, RGCI!</div>
     <div class="pin-label">Set a 4-digit PIN to protect your progress</div>
     <div class="pin-dots" id="create-pin-dots">
       <div class="pin-dot"></div><div class="pin-dot"></div>
@@ -1973,12 +1980,12 @@
 <section id="screen-home" class="screen" role="main">
   <div class="home-hero">
     <div class="profile-indicator" id="profile-indicator">
-      <span class="pi-emoji" id="pi-emoji">🇺🇸</span>
+      <span class="pi-emoji" id="pi-emoji">👷</span>
       <span class="pi-name" id="pi-name">Player</span>
     </div>
     <span class="flag-emoji" aria-hidden="true">🇺🇸</span>
-    <h1>U.S. <span>Civics</span> Quiz</h1>
-    <p>Prepare for Your Citizenship Test</p>
+    <h1>U.S. Citizenship <span>Study Guide</span></h1>
+    <p>2025 Edition U.S. Civics Quiz</p>
     <div class="stars-row" aria-hidden="true">
       <div class="star-dot"></div><div class="star-dot"></div>
       <div class="star-dot"></div><div class="star-dot"></div>
@@ -1991,19 +1998,19 @@
          onclick="startPracticeTest()" onkeydown="if(event.key==='Enter')startPracticeTest()">
       <span class="mode-icon" aria-hidden="true">🎯</span>
       <div class="mode-title">Practice Test</div>
-      <div class="mode-desc">20 questions — full practice test</div>
+      <div class="mode-desc">20 questions, full practice test</div>
     </div>
     <div class="mode-card" role="listitem" tabindex="0"
          onclick="startFlashcards()" onkeydown="if(event.key==='Enter')startFlashcards()">
       <span class="mode-icon" aria-hidden="true">🃏</span>
       <div class="mode-title">Flashcards</div>
-      <div class="mode-desc">Study all 100 Q&amp;As at your pace</div>
+      <div class="mode-desc">Review all 128 questions at your pace</div>
     </div>
     <div class="mode-card" role="listitem" tabindex="0"
          onclick="startSpeedRound()" onkeydown="if(event.key==='Enter')startSpeedRound()">
       <span class="mode-icon" aria-hidden="true">⚡</span>
       <div class="mode-title">Speed Round</div>
-      <div class="mode-desc">60 seconds — how many can you get?</div>
+      <div class="mode-desc">60 seconds, how many can you get?</div>
     </div>
     <div class="mode-card" role="listitem" tabindex="0"
          onclick="showCategoryScreen()" onkeydown="if(event.key==='Enter')showCategoryScreen()">
@@ -2020,7 +2027,7 @@
   </button>
 
   <div class="mastery-bar-wrap">
-    <div class="mastery-bar-label"><strong id="home-mastered-count">0</strong> / 100 questions mastered</div>
+    <div class="mastery-bar-label"><strong id="home-mastered-count">0</strong> / <span class="total-question-count">128</span> questions mastered</div>
     <div class="mastery-bar-track">
       <div class="mastery-bar-fill" id="home-mastery-fill" style="width:0%"></div>
     </div>
@@ -2028,7 +2035,7 @@
 
   <div class="home-footer">
     <div class="progress-summary" id="home-progress-summary">
-      <span id="home-known-count">0</span> of 100 cards marked as <strong>Known</strong> ·
+      <span id="home-known-count">0</span> of <span class="total-question-count">128</span> cards marked as <strong>Known</strong> ·
       Best score: <strong id="home-best-score">—</strong>
     </div>
   </div>
@@ -2082,7 +2089,7 @@
   <header class="header">
     <button class="back-btn" onclick="goHome()" aria-label="Go home">‹</button>
     <h2 id="fc-header-title">Flashcards</h2>
-    <div class="header-right" id="fc-header-progress">1 / 100</div>
+    <div class="header-right" id="fc-header-progress">1 / 128</div>
   </header>
 
   <div class="flashcard-progress">
@@ -2108,7 +2115,7 @@
         <div class="fc-answer-label">Answer</div>
         <div class="fc-answer" id="fc-back-answer">Answer text</div>
         <div class="fc-variable-note hidden" id="fc-variable-note">
-          ⚠️ This answer may change. Check uscis.gov/citizenship/testupdates
+          This current or location-specific answer may change. Verify again near the interview date.
         </div>
       </div>
     </div>
@@ -2225,7 +2232,7 @@
 <section id="screen-progress" class="screen" aria-label="Your Progress">
   <header class="header">
     <button class="back-btn" onclick="goHome()" aria-label="Go home">‹</button>
-    <h2>Laura's Dashboard</h2>
+    <h2>Javier Garcia's Dashboard</h2>
     <div class="header-right">📊</div>
   </header>
   <div class="progress-screen-content">
@@ -2307,6 +2314,8 @@
 /* (For GitHub Pages, icon-192.svg and icon-512.svg are separate files) */
 </script>
 
+<script src="./questions-2025.js"></script>
+
 <!-- ================================================================
      MAIN APP SCRIPT
      ================================================================ -->
@@ -2314,438 +2323,41 @@
 'use strict';
 
 /* ============================================================
-   QUESTION DATA — all 100 USCIS civics questions
+   QUESTION DATA - loaded from questions-2025.js
    ============================================================ */
-const questions = [
-  // AMERICAN GOVERNMENT — Principles of Democracy
-  {id:1,  question:"What is the supreme law of the land?",
-          primary:"The Constitution",
-          answers:["The Constitution"],
-          category:"Principles of Democracy", variable:false},
-  {id:2,  question:"What does the Constitution do?",
-          primary:"Sets up the government and protects basic rights of Americans",
-          answers:["Sets up the government","Defines the government","Protects basic rights of Americans"],
-          category:"Principles of Democracy", variable:false},
-  {id:3,  question:"What are the first three words of the Constitution?",
-          primary:"We the People",
-          answers:["We the People"],
-          category:"Principles of Democracy", variable:false},
-  {id:4,  question:"What is an amendment?",
-          primary:"A change or addition to the Constitution",
-          answers:["A change to the Constitution","An addition to the Constitution"],
-          category:"Principles of Democracy", variable:false},
-  {id:5,  question:"What do we call the first ten amendments to the Constitution?",
-          primary:"The Bill of Rights",
-          answers:["The Bill of Rights"],
-          category:"Principles of Democracy", variable:false},
-  {id:6,  question:"What is one right or freedom from the First Amendment?",
-          primary:"Freedom of speech",
-          answers:["Speech","Religion","Assembly","Press","Petition the government"],
-          category:"Principles of Democracy", variable:false},
-  {id:7,  question:"How many amendments does the Constitution have?",
-          primary:"27",
-          answers:["Twenty-seven","27"],
-          category:"Principles of Democracy", variable:false},
-  {id:8,  question:"What did the Declaration of Independence do?",
-          primary:"Announced our independence from Great Britain",
-          answers:["Announced our independence from Great Britain","Declared our independence from Great Britain","Said that the United States is free from Great Britain"],
-          category:"Principles of Democracy", variable:false},
-  {id:9,  question:"What are two rights in the Declaration of Independence?",
-          primary:"Life and liberty",
-          answers:["Life","Liberty","Pursuit of happiness"],
-          category:"Principles of Democracy", variable:false},
-  {id:10, question:"What is freedom of religion?",
-          primary:"You can practice any religion, or not practice a religion.",
-          answers:["You can practice any religion, or not practice a religion."],
-          category:"Principles of Democracy", variable:false},
-  {id:11, question:"What is the economic system in the United States?",
-          primary:"Capitalist economy",
-          answers:["Capitalist economy","Market economy"],
-          category:"Principles of Democracy", variable:false},
-  {id:12, question:"What is the 'rule of law'?",
-          primary:"No one is above the law.",
-          answers:["Everyone must follow the law.","Leaders must obey the law.","Government must obey the law.","No one is above the law."],
-          category:"Principles of Democracy", variable:false},
-
-  // System of Government
-  {id:13, question:"Name one branch or part of the government.",
-          primary:"Congress (Legislative)",
-          answers:["Congress","Legislative","President","Executive","The courts","Judicial"],
-          category:"System of Government", variable:false},
-  {id:14, question:"What stops one branch of government from becoming too powerful?",
-          primary:"Checks and balances",
-          answers:["Checks and balances","Separation of powers"],
-          category:"System of Government", variable:false},
-  {id:15, question:"Who is in charge of the executive branch?",
-          primary:"The President",
-          answers:["The President"],
-          category:"System of Government", variable:false},
-  {id:16, question:"Who makes federal laws?",
-          primary:"Congress",
-          answers:["Congress","Senate and House of Representatives","U.S. legislature"],
-          category:"System of Government", variable:false},
-  {id:17, question:"What are the two parts of the U.S. Congress?",
-          primary:"The Senate and House of Representatives",
-          answers:["The Senate and House of Representatives"],
-          category:"System of Government", variable:false},
-  {id:18, question:"How many U.S. Senators are there?",
-          primary:"100",
-          answers:["One hundred","100"],
-          category:"System of Government", variable:false},
-  {id:19, question:"We elect a U.S. Senator for how many years?",
-          primary:"6",
-          answers:["Six","6"],
-          category:"System of Government", variable:false},
-  {id:20, question:"Who is one of your state's U.S. Senators now?",
-          primary:"Alex Padilla",
-          answers:["Alex Padilla","Adam Schiff"],
-          category:"System of Government", variable:false},
-  {id:21, question:"The House of Representatives has how many voting members?",
-          primary:"435",
-          answers:["Four hundred thirty-five","435"],
-          category:"System of Government", variable:false},
-  {id:22, question:"We elect a U.S. Representative for how many years?",
-          primary:"2",
-          answers:["Two","2"],
-          category:"System of Government", variable:false},
-  {id:23, question:"Name your U.S. Representative.",
-          primary:"Salud Carbajal",
-          answers:["Salud Carbajal"],
-          category:"System of Government", variable:false},
-  {id:24, question:"Who does a U.S. Senator represent?",
-          primary:"All people of the state",
-          answers:["All people of the state"],
-          category:"System of Government", variable:false},
-  {id:25, question:"Why do some states have more Representatives than other states?",
-          primary:"Because of the state's population",
-          answers:["Because of the state's population","They have more people","Some states have more people"],
-          category:"System of Government", variable:false},
-  {id:26, question:"We elect a President for how many years?",
-          primary:"4",
-          answers:["Four","4"],
-          category:"System of Government", variable:false},
-  {id:27, question:"In what month do we vote for President?",
-          primary:"November",
-          answers:["November"],
-          category:"System of Government", variable:false},
-  {id:28, question:"What is the name of the President of the United States now?",
-          primary:"Donald Trump",
-          answers:["Donald Trump","Trump"],
-          category:"System of Government", variable:false},
-  {id:29, question:"What is the name of the Vice President of the United States now?",
-          primary:"JD Vance",
-          answers:["JD Vance","J.D. Vance","Vance"],
-          category:"System of Government", variable:false},
-  {id:30, question:"If the President can no longer serve, who becomes President?",
-          primary:"The Vice President",
-          answers:["The Vice President"],
-          category:"System of Government", variable:false},
-  {id:31, question:"If both the President and the Vice President can no longer serve, who becomes President?",
-          primary:"The Speaker of the House",
-          answers:["The Speaker of the House"],
-          category:"System of Government", variable:false},
-  {id:32, question:"Who is the Commander in Chief of the military?",
-          primary:"The President",
-          answers:["The President"],
-          category:"System of Government", variable:false},
-  {id:33, question:"Who signs bills to become laws?",
-          primary:"The President",
-          answers:["The President"],
-          category:"System of Government", variable:false},
-  {id:34, question:"Who vetoes bills?",
-          primary:"The President",
-          answers:["The President"],
-          category:"System of Government", variable:false},
-  {id:35, question:"What does the President's Cabinet do?",
-          primary:"Advises the President",
-          answers:["Advises the President"],
-          category:"System of Government", variable:false},
-  {id:36, question:"What are two Cabinet-level positions?",
-          primary:"Secretary of State and Secretary of Defense",
-          answers:["Secretary of Agriculture","Secretary of Commerce","Secretary of Defense","Secretary of Education","Secretary of Energy","Secretary of Health and Human Services","Secretary of Homeland Security","Secretary of Housing and Urban Development","Secretary of the Interior","Secretary of Labor","Secretary of State","Secretary of Transportation","Secretary of the Treasury","Secretary of Veterans Affairs","Attorney General","Vice President"],
-          category:"System of Government", variable:false},
-  {id:37, question:"What does the judicial branch do?",
-          primary:"Reviews laws and decides if a law goes against the Constitution",
-          answers:["Reviews laws","Explains laws","Resolves disputes","Decides if a law goes against the Constitution"],
-          category:"System of Government", variable:false},
-  {id:38, question:"What is the highest court in the United States?",
-          primary:"The Supreme Court",
-          answers:["The Supreme Court"],
-          category:"System of Government", variable:false},
-  {id:39, question:"How many justices are on the Supreme Court?",
-          primary:"9",
-          answers:["Nine","9"],
-          category:"System of Government", variable:false},
-  {id:40, question:"Who is the Chief Justice of the United States now?",
-          primary:"John Roberts",
-          answers:["John Roberts","Roberts"],
-          category:"System of Government", variable:false},
-  {id:41, question:"What is one power of the federal government?",
-          primary:"To print money",
-          answers:["To print money","To declare war","To create an army","To make treaties"],
-          category:"System of Government", variable:false},
-  {id:42, question:"What is one power of the states?",
-          primary:"Provide schooling and education",
-          answers:["Provide schooling and education","Provide protection (police)","Provide safety (fire departments)","Give a driver's license","Approve zoning and land use"],
-          category:"System of Government", variable:false},
-  {id:43, question:"Who is the Governor of your state now?",
-          primary:"Gavin Newsom",
-          answers:["Gavin Newsom","Newsom"],
-          category:"System of Government", variable:false},
-  {id:44, question:"What is the capital of your state?",
-          primary:"Sacramento",
-          answers:["Sacramento"],
-          category:"System of Government", variable:false},
-  {id:45, question:"What are the two major political parties in the United States?",
-          primary:"Democratic and Republican",
-          answers:["Democratic and Republican"],
-          category:"System of Government", variable:false},
-  {id:46, question:"What is the political party of the President now?",
-          primary:"Republican",
-          answers:["Republican","Republican Party"],
-          category:"System of Government", variable:false},
-  {id:47, question:"What is the name of the Speaker of the House of Representatives now?",
-          primary:"Mike Johnson",
-          answers:["Mike Johnson","Johnson"],
-          category:"System of Government", variable:false},
-
-  // Rights and Responsibilities
-  {id:48, question:"There are four amendments to the Constitution about who can vote. Describe one of them.",
-          primary:"Citizens eighteen (18) and older can vote.",
-          answers:["Citizens eighteen and older can vote.","You don't have to pay a poll tax to vote.","Any citizen can vote.","A male citizen of any race can vote."],
-          category:"Rights & Responsibilities", variable:false},
-  {id:49, question:"What is one responsibility that is only for United States citizens?",
-          primary:"Serve on a jury",
-          answers:["Serve on a jury","Vote in a federal election"],
-          category:"Rights & Responsibilities", variable:false},
-  {id:50, question:"Name one right only for United States citizens.",
-          primary:"Vote in a federal election",
-          answers:["Vote in a federal election","Run for federal office"],
-          category:"Rights & Responsibilities", variable:false},
-  {id:51, question:"What are two rights of everyone living in the United States?",
-          primary:"Freedom of speech and freedom of religion",
-          answers:["Freedom of expression","Freedom of speech","Freedom of assembly","Freedom to petition the government","Freedom of religion","The right to bear arms"],
-          category:"Rights & Responsibilities", variable:false},
-  {id:52, question:"What do we show loyalty to when we say the Pledge of Allegiance?",
-          primary:"The United States and the flag",
-          answers:["The United States","The flag"],
-          category:"Rights & Responsibilities", variable:false},
-  {id:53, question:"What is one promise you make when you become a United States citizen?",
-          primary:"Give up loyalty to other countries",
-          answers:["Give up loyalty to other countries","Defend the Constitution and laws of the United States","Obey the laws of the United States","Serve in the U.S. military if needed","Be loyal to the United States"],
-          category:"Rights & Responsibilities", variable:false},
-  {id:54, question:"How old do citizens have to be to vote for President?",
-          primary:"18 and older",
-          answers:["Eighteen and older","18 and older"],
-          category:"Rights & Responsibilities", variable:false},
-  {id:55, question:"What are two ways that Americans can participate in their democracy?",
-          primary:"Vote and join a political party",
-          answers:["Vote","Join a political party","Help with a campaign","Join a civic group","Run for office","Write to a newspaper"],
-          category:"Rights & Responsibilities", variable:false},
-  {id:56, question:"When is the last day you can send in federal income tax forms?",
-          primary:"April 15",
-          answers:["April 15"],
-          category:"Rights & Responsibilities", variable:false},
-  {id:57, question:"When must all men register for the Selective Service?",
-          primary:"At age 18",
-          answers:["At age eighteen","Between eighteen and twenty-six"],
-          category:"Rights & Responsibilities", variable:false},
-
-  // Colonial History
-  {id:58, question:"What is one reason colonists came to America?",
-          primary:"Freedom",
-          answers:["Freedom","Political liberty","Religious freedom","Economic opportunity","Practice their religion","Escape persecution"],
-          category:"Colonial History", variable:false},
-  {id:59, question:"Who lived in America before the Europeans arrived?",
-          primary:"American Indians / Native Americans",
-          answers:["American Indians","Native Americans"],
-          category:"Colonial History", variable:false},
-  {id:60, question:"What group of people was taken to America and sold as slaves?",
-          primary:"Africans",
-          answers:["Africans","People from Africa"],
-          category:"Colonial History", variable:false},
-  {id:61, question:"Why did the colonists fight the British?",
-          primary:"Taxation without representation",
-          answers:["Because of high taxes (taxation without representation)","Because the British army stayed in their houses","Because they didn't have self-government"],
-          category:"Colonial History", variable:false},
-  {id:62, question:"Who wrote the Declaration of Independence?",
-          primary:"Thomas Jefferson",
-          answers:["Thomas Jefferson","Jefferson"],
-          category:"Colonial History", variable:false},
-  {id:63, question:"When was the Declaration of Independence adopted?",
-          primary:"July 4, 1776",
-          answers:["July 4, 1776"],
-          category:"Colonial History", variable:false},
-  {id:64, question:"There were 13 original states. Name three.",
-          primary:"New York, Virginia, and Massachusetts",
-          answers:["New Hampshire","Massachusetts","Rhode Island","Connecticut","New York","New Jersey","Pennsylvania","Delaware","Maryland","Virginia","North Carolina","South Carolina","Georgia"],
-          category:"Colonial History", variable:false},
-  {id:65, question:"What happened at the Constitutional Convention?",
-          primary:"The Constitution was written.",
-          answers:["The Constitution was written.","The Founding Fathers wrote the Constitution."],
-          category:"Colonial History", variable:false},
-  {id:66, question:"When was the Constitution written?",
-          primary:"1787",
-          answers:["1787"],
-          category:"Colonial History", variable:false},
-  {id:67, question:"Name one writer of the Federalist Papers.",
-          primary:"James Madison",
-          answers:["James Madison","Alexander Hamilton","John Jay","Publius"],
-          category:"Colonial History", variable:false},
-  {id:68, question:"What is one thing Benjamin Franklin is famous for?",
-          primary:"U.S. diplomat",
-          answers:["U.S. diplomat","Oldest member of the Constitutional Convention","First Postmaster General of the United States","Writer of 'Poor Richard's Almanac'","Started the first free libraries"],
-          category:"Colonial History", variable:false},
-  {id:69, question:"Who is the 'Father of Our Country'?",
-          primary:"George Washington",
-          answers:["George Washington"],
-          category:"Colonial History", variable:false},
-  {id:70, question:"Who was the first President?",
-          primary:"George Washington",
-          answers:["George Washington"],
-          category:"Colonial History", variable:false},
-
-  // Modern History (1800s + recent)
-  {id:71, question:"What territory did the United States buy from France in 1803?",
-          primary:"The Louisiana Territory",
-          answers:["The Louisiana Territory","Louisiana"],
-          category:"Modern History", variable:false},
-  {id:72, question:"Name one war fought by the United States in the 1800s.",
-          primary:"The Civil War",
-          answers:["War of 1812","Mexican-American War","Civil War","Spanish-American War"],
-          category:"Modern History", variable:false},
-  {id:73, question:"Name the U.S. war between the North and the South.",
-          primary:"The Civil War",
-          answers:["The Civil War","The War between the States"],
-          category:"Modern History", variable:false},
-  {id:74, question:"Name one problem that led to the Civil War.",
-          primary:"Slavery",
-          answers:["Slavery","Economic reasons","States' rights"],
-          category:"Modern History", variable:false},
-  {id:75, question:"What was one important thing that Abraham Lincoln did?",
-          primary:"Freed the slaves (Emancipation Proclamation)",
-          answers:["Freed the slaves (Emancipation Proclamation)","Saved the Union","Led the United States during the Civil War"],
-          category:"Modern History", variable:false},
-  {id:76, question:"What did the Emancipation Proclamation do?",
-          primary:"Freed the slaves",
-          answers:["Freed the slaves","Freed slaves in the Confederacy","Freed slaves in most Southern states"],
-          category:"Modern History", variable:false},
-  {id:77, question:"What did Susan B. Anthony do?",
-          primary:"Fought for women's rights",
-          answers:["Fought for women's rights","Fought for civil rights"],
-          category:"Modern History", variable:false},
-  {id:78, question:"Name one war fought by the United States in the 1900s.",
-          primary:"World War II",
-          answers:["World War I","World War II","Korean War","Vietnam War","Gulf War"],
-          category:"Modern History", variable:false},
-  {id:79, question:"Who was President during World War I?",
-          primary:"Woodrow Wilson",
-          answers:["Woodrow Wilson","Wilson"],
-          category:"Modern History", variable:false},
-  {id:80, question:"Who was President during the Great Depression and World War II?",
-          primary:"Franklin Roosevelt",
-          answers:["Franklin Roosevelt","Roosevelt"],
-          category:"Modern History", variable:false},
-  {id:81, question:"Who did the United States fight in World War II?",
-          primary:"Japan, Germany, and Italy",
-          answers:["Japan, Germany, and Italy"],
-          category:"Modern History", variable:false},
-  {id:82, question:"Before he was President, Eisenhower was a general. What war was he in?",
-          primary:"World War II",
-          answers:["World War II"],
-          category:"Modern History", variable:false},
-  {id:83, question:"During the Cold War, what was the main concern of the United States?",
-          primary:"Communism",
-          answers:["Communism"],
-          category:"Modern History", variable:false},
-  {id:84, question:"What movement tried to end racial discrimination?",
-          primary:"The civil rights movement",
-          answers:["Civil rights movement"],
-          category:"Modern History", variable:false},
-  {id:85, question:"What did Martin Luther King, Jr. do?",
-          primary:"Fought for civil rights and equality for all Americans",
-          answers:["Fought for civil rights","Worked for equality for all Americans"],
-          category:"Modern History", variable:false},
-  {id:86, question:"What major event happened on September 11, 2001, in the United States?",
-          primary:"Terrorists attacked the United States.",
-          answers:["Terrorists attacked the United States."],
-          category:"Modern History", variable:false},
-  {id:87, question:"Name one American Indian tribe in the United States.",
-          primary:"Cherokee",
-          answers:["Cherokee","Navajo","Sioux","Chippewa","Choctaw","Pueblo","Apache","Iroquois","Creek","Blackfeet","Seminole","Cheyenne","Arawak","Shawnee","Mohegan","Huron","Oneida","Lakota","Crow","Teton","Hopi","Inuit"],
-          category:"Modern History", variable:false},
-
-  // Geography & Symbols
-  {id:88, question:"Name one of the two longest rivers in the United States.",
-          primary:"The Mississippi River",
-          answers:["Missouri River","Mississippi River"],
-          category:"Geography & Symbols", variable:false},
-  {id:89, question:"What ocean is on the West Coast of the United States?",
-          primary:"The Pacific Ocean",
-          answers:["Pacific Ocean"],
-          category:"Geography & Symbols", variable:false},
-  {id:90, question:"What ocean is on the East Coast of the United States?",
-          primary:"The Atlantic Ocean",
-          answers:["Atlantic Ocean"],
-          category:"Geography & Symbols", variable:false},
-  {id:91, question:"Name one U.S. territory.",
-          primary:"Puerto Rico",
-          answers:["Puerto Rico","U.S. Virgin Islands","American Samoa","Northern Mariana Islands","Guam"],
-          category:"Geography & Symbols", variable:false},
-  {id:92, question:"Name one state that borders Canada.",
-          primary:"Alaska",
-          answers:["Maine","New Hampshire","Vermont","New York","Pennsylvania","Ohio","Michigan","Minnesota","North Dakota","Montana","Idaho","Washington","Alaska"],
-          category:"Geography & Symbols", variable:false},
-  {id:93, question:"Name one state that borders Mexico.",
-          primary:"California",
-          answers:["California","Arizona","New Mexico","Texas"],
-          category:"Geography & Symbols", variable:false},
-  {id:94, question:"What is the capital of the United States?",
-          primary:"Washington, D.C.",
-          answers:["Washington, D.C."],
-          category:"Geography & Symbols", variable:false},
-  {id:95, question:"Where is the Statue of Liberty?",
-          primary:"New York Harbor / Liberty Island",
-          answers:["New York Harbor","Liberty Island","New Jersey","Near New York City"],
-          category:"Geography & Symbols", variable:false},
-  {id:96, question:"Why does the flag have 13 stripes?",
-          primary:"Because there were 13 original colonies",
-          answers:["Because there were 13 original colonies","The stripes represent the original colonies"],
-          category:"Geography & Symbols", variable:false},
-  {id:97, question:"Why does the flag have 50 stars?",
-          primary:"Because there is one star for each state",
-          answers:["Because there is one star for each state","Because there are 50 states"],
-          category:"Geography & Symbols", variable:false},
-  {id:98, question:"What is the name of the national anthem?",
-          primary:"The Star-Spangled Banner",
-          answers:["The Star-Spangled Banner"],
-          category:"Geography & Symbols", variable:false},
-  {id:99, question:"When do we celebrate Independence Day?",
-          primary:"July 4",
-          answers:["July 4"],
-          category:"Geography & Symbols", variable:false},
-  {id:100,question:"Name two national U.S. holidays.",
-          primary:"Independence Day and Thanksgiving",
-          answers:["New Year's Day","Martin Luther King Jr. Day","Presidents' Day","Memorial Day","Independence Day","Labor Day","Columbus Day","Veterans Day","Thanksgiving","Christmas"],
-          category:"Geography & Symbols", variable:false}
-];
+const questions = Array.isArray(window.QUESTIONS_2025) ? window.QUESTIONS_2025 : [];
+const TOTAL_QUESTIONS = questions.length;
+const PASSING_SCORE_2025 = 12;
+const PRACTICE_QUESTION_COUNT = 20;
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCb_WKobOzZq8Ihg8NiQ9nZvGC8C26c11E",
+  projectId: "civics-quiz-74e12"
+};
+const AUTH_MODE = 'single-user';
+const CURRENT_USER = {
+  id: 'javier-garcia-rgci',
+  name: 'Javier Garcia - CEO, RGCI',
+  emoji: '👷'
+};
+const FIRESTORE_BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/documents`;
+const CLOUD_PROGRESS_DOC = `${FIRESTORE_BASE_URL}/users/${CURRENT_USER.id}/progress/main?key=${FIREBASE_CONFIG.apiKey}`;
+const LEGACY_CLOUD_PROGRESS_DOC = `${FIRESTORE_BASE_URL}/progress/javier?key=${FIREBASE_CONFIG.apiKey}`;
+let cloudSaveTimer = null;
+let cloudSaveInFlight = false;
+let cloudLoadComplete = false;
 
 /* ============================================================
    CATEGORY CONFIG
    ============================================================ */
 const CATEGORIES = [
-  { name:"Principles of Democracy", icon:"⚖️",  color:"#1a3a8f", questions: questions.filter(q=>q.category==="Principles of Democracy") },
-  { name:"System of Government",    icon:"🏛️",  color:"#5a1a8f", questions: questions.filter(q=>q.category==="System of Government") },
-  { name:"Rights & Responsibilities",icon:"✍️", color:"#8f1a3a", questions: questions.filter(q=>q.category==="Rights & Responsibilities") },
-  { name:"Colonial History",         icon:"🪶",  color:"#6b4000", questions: questions.filter(q=>q.category==="Colonial History") },
-  { name:"Modern History",           icon:"🗽",  color:"#005a5a", questions: questions.filter(q=>q.category==="Modern History") },
-  { name:"Geography & Symbols",      icon:"🗺️",  color:"#004a00", questions: questions.filter(q=>q.category==="Geography & Symbols") }
+  { name:"Principles of American Government", icon:"⚖️",  color:"#1a3a8f", questions: questions.filter(q=>q.category==="Principles of American Government") },
+  { name:"System of Government",              icon:"🏛️",  color:"#5a1a8f", questions: questions.filter(q=>q.category==="System of Government") },
+  { name:"Rights and Responsibilities",       icon:"✍️", color:"#8f1a3a", questions: questions.filter(q=>q.category==="Rights and Responsibilities") },
+  { name:"Colonial Period and Independence",  icon:"🪶",  color:"#6b4000", questions: questions.filter(q=>q.category==="Colonial Period and Independence") },
+  { name:"1800s",                             icon:"📜",  color:"#005a5a", questions: questions.filter(q=>q.category==="1800s") },
+  { name:"Recent American History",           icon:"🗽",  color:"#004a00", questions: questions.filter(q=>q.category==="Recent American History") },
+  { name:"Symbols and Holidays",              icon:"⭐",  color:"#7a4300", questions: questions.filter(q=>q.category==="Symbols and Holidays") }
 ];
-
-/* ============================================================
-   VARIABLE QUESTION IDs (skip in quiz modes — auto-award point)
-   ============================================================ */
-const VARIABLE_IDS = new Set([20,23,28,29,39,40,43,44,46,47]);
 
 /* ============================================================
    STATE
@@ -2827,7 +2439,7 @@ function migrateOldData() {
   const profile = {
     id: generateProfileId(),
     name: 'Player 1',
-    emoji: '🇺🇸',
+    emoji: CURRENT_USER.emoji,
     pinHash: '',
     knownCards: oldKnown ? JSON.parse(oldKnown) : [],
     masteredCards: [],
@@ -2870,7 +2482,88 @@ function loadStorage() {
   } catch(e) { /* ignore */ }
 }
 
-function saveStorage() {
+function getProgressSnapshot() {
+  return {
+    version: 1,
+    activeProfileId: state.activeProfileId,
+    activeProfileName: state.activeProfileName,
+    activeProfileEmoji: state.activeProfileEmoji,
+    knownCards: [...state.knownCards],
+    masteredCards: [...state.masteredCards],
+    correctStreak: state.correctStreak,
+    bestScore: state.bestScore,
+    sessionHistory: state.sessionHistory.slice(-100),
+    savedAt: new Date().toISOString()
+  };
+}
+
+function applyProgressSnapshot(data) {
+  if (!data || !state.activeProfileId) return;
+  state.knownCards = new Set(data.knownCards || []);
+  state.masteredCards = new Set(data.masteredCards || []);
+  state.correctStreak = data.correctStreak || {};
+  state.bestScore = data.bestScore ?? null;
+  state.sessionHistory = Array.isArray(data.sessionHistory) ? data.sessionHistory.slice(-100) : [];
+
+  const profiles = getProfiles();
+  const idx = profiles.findIndex(p => p.id === state.activeProfileId);
+  if (idx !== -1) {
+    profiles[idx].knownCards = [...state.knownCards];
+    profiles[idx].masteredCards = [...state.masteredCards];
+    profiles[idx].correctStreak = state.correctStreak;
+    profiles[idx].bestScore = state.bestScore;
+    profiles[idx].sessionHistory = state.sessionHistory.slice(-100);
+    setProfiles(profiles);
+  }
+  updateHomeProgress();
+}
+
+async function loadCloudProgress() {
+  if (cloudLoadComplete) return;
+  try {
+    let response = await fetch(CLOUD_PROGRESS_DOC);
+    if (!response.ok) response = await fetch(LEGACY_CLOUD_PROGRESS_DOC);
+    if (!response.ok) return;
+    const doc = await response.json();
+    const payload = doc.fields?.payload?.stringValue;
+    if (!payload) return;
+    applyProgressSnapshot(JSON.parse(payload));
+  } catch(e) {
+    // Keep local progress if Firebase is unavailable.
+  } finally {
+    cloudLoadComplete = true;
+  }
+}
+
+function scheduleCloudSave() {
+  if (!state.activeProfileId) return;
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer = setTimeout(saveCloudProgress, 900);
+}
+
+async function saveCloudProgress() {
+  if (cloudSaveInFlight || !state.activeProfileId) return;
+  cloudSaveInFlight = true;
+  try {
+    const payload = JSON.stringify(getProgressSnapshot());
+    await fetch(CLOUD_PROGRESS_DOC, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fields: {
+          payload: { stringValue: payload },
+          savedAt: { timestampValue: new Date().toISOString() }
+        }
+      })
+    });
+  } catch(e) {
+    // Local progress remains saved even if cloud sync fails.
+  } finally {
+    cloudSaveInFlight = false;
+  }
+}
+
+function saveStorage(syncCloud = true) {
   try {
     if (!state.activeProfileId) return;
     const profiles = getProfiles();
@@ -2882,6 +2575,7 @@ function saveStorage() {
     profiles[idx].bestScore = state.bestScore;
     profiles[idx].sessionHistory = state.sessionHistory.slice(-100);
     setProfiles(profiles);
+    if (syncCloud) scheduleCloudSave();
   } catch(e) {}
 }
 
@@ -2955,7 +2649,8 @@ function updateHomeProgress() {
   // Mastery bar
   const mastered = state.masteredCards.size;
   document.getElementById('home-mastered-count').textContent = mastered;
-  document.getElementById('home-mastery-fill').style.width = (mastered / 100 * 100) + '%';
+  document.querySelectorAll('.total-question-count').forEach(el => { el.textContent = TOTAL_QUESTIONS; });
+  document.getElementById('home-mastery-fill').style.width = (mastered / TOTAL_QUESTIONS * 100) + '%';
   // Profile indicator
   updateProfileIndicator();
 }
@@ -2963,7 +2658,7 @@ function updateHomeProgress() {
 function updateProfileIndicator() {
   const el = document.getElementById('profile-indicator');
   if (!el) return;
-  document.getElementById('pi-emoji').textContent = state.activeProfileEmoji || '🇺🇸';
+  document.getElementById('pi-emoji').textContent = state.activeProfileEmoji || CURRENT_USER.emoji;
   document.getElementById('pi-name').textContent = state.activeProfileName || 'Player';
 }
 
@@ -3037,28 +2732,6 @@ function renderQuestion(containerId, q, onAnswer, isSpeed = false) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
 
-  if (q.variable) {
-    // Auto-award card
-    const card = document.createElement('div');
-    card.className = 'variable-card';
-    card.innerHTML = `
-      <div class="vc-icon">📋</div>
-      <h3>This Answer Varies!</h3>
-      <p>The answer to this question depends on current officeholders or your state/district. Check the official USCIS website for the latest answer.</p>
-      <a class="vc-link" href="https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test" target="_blank" rel="noopener">uscis.gov → Study Materials ↗</a>
-      <br>
-      <div class="auto-point">✓ You get this one free!</div>
-    `;
-    container.appendChild(card);
-
-    const nextBtn = document.createElement('button');
-    nextBtn.className = 'next-btn';
-    nextBtn.textContent = isSpeed ? '→ Next' : 'Continue →';
-    nextBtn.onclick = () => onAnswer(true, true);
-    container.appendChild(nextBtn);
-    return;
-  }
-
   // Category + number badge
   const catEl = document.createElement('div');
   catEl.className = 'category-tag';
@@ -3070,6 +2743,15 @@ function renderQuestion(containerId, q, onAnswer, isSpeed = false) {
   qEl.className = 'question-text';
   qEl.textContent = q.question;
   container.appendChild(qEl);
+
+  if (q.variable) {
+    const note = document.createElement('div');
+    note.className = 'feedback-toast variable-note';
+    note.style.display = 'flex';
+    note.style.marginBottom = '12px';
+    note.innerHTML = `<span>!</span> <span>${q.note || 'This answer can change. Verify it near the interview date.'}</span>`;
+    container.appendChild(note);
+  }
 
   // Generate choices
   const choices = generateChoices(q);
@@ -3193,7 +2875,7 @@ function startPracticeTest(pool, bypassMastery = false) {
     return;
   }
 
-  state.practiceQuestions = pickQuizQuestions(questionPool, 20, exclude);
+  state.practiceQuestions = pickQuizQuestions(questionPool, PRACTICE_QUESTION_COUNT, exclude);
   state.practiceIndex = 0;
   state.practiceScore = 0;
   state.practiceResults = [];
@@ -3238,7 +2920,7 @@ function renderPracticeQuestion() {
 function showPracticeResults() {
   const score = state.practiceScore;
   const total = state.practiceQuestions.length;
-  const passing = Math.ceil(total * 0.6);
+  const passing = total === PRACTICE_QUESTION_COUNT ? PASSING_SCORE_2025 : Math.ceil(total * 0.6);
   const passed = score >= passing;
 
   // Update best score
@@ -3380,14 +3062,18 @@ function renderFlashcard() {
 
   // Front
   document.getElementById('fc-front-category').textContent = q.category;
-  document.getElementById('fc-front-number').textContent = `Question ${q.id} of 100`;
+  document.getElementById('fc-front-number').textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
   document.getElementById('fc-front-question').textContent = q.question;
 
   // Back
   let answerHTML = '';
   if (q.variable) {
-    answerHTML = `<span>${q.primary}</span>`;
-    document.getElementById('fc-variable-note').classList.remove('hidden');
+    answerHTML = q.answers.length > 1
+      ? '<ul>' + q.answers.map(a => `<li>${a}</li>`).join('') + '</ul>'
+      : `<span>${q.primary}</span>`;
+    const variableNote = document.getElementById('fc-variable-note');
+    variableNote.textContent = q.note || 'This answer may change. Verify it again near the interview date.';
+    variableNote.classList.remove('hidden');
   } else {
     document.getElementById('fc-variable-note').classList.add('hidden');
     if (q.answers.length === 1) {
@@ -3710,7 +3396,7 @@ function renderProgressStats(practice, speed, all) {
   const avgScore = practice.length > 0
     ? (practice.reduce((s, p) => s + p.score, 0) / practice.length).toFixed(1)
     : '--';
-  const masteredPct = Math.round((state.masteredCards.size / 100) * 100);
+  const masteredPct = Math.round((state.masteredCards.size / TOTAL_QUESTIONS) * 100);
 
   // Average response time
   let allTimes = [];
@@ -3765,22 +3451,24 @@ function renderScoreChart(practice) {
   const padL = 30, padR = 10, padT = 15, padB = 28;
   const chartW = w - padL - padR;
   const chartH = h - padT - padB;
+  const maxScore = Math.max(PRACTICE_QUESTION_COUNT, ...recent.map(s => s.total || PRACTICE_QUESTION_COUNT));
+  const passingScore = maxScore === PRACTICE_QUESTION_COUNT ? PASSING_SCORE_2025 : Math.ceil(maxScore * 0.6);
 
   // Grid lines
   ctx.strokeStyle = 'rgba(255,255,255,0.08)';
   ctx.lineWidth = 1;
-  for (let v = 0; v <= 10; v += 2) {
-    const y = padT + chartH - (v / 10) * chartH;
+  for (let v = 0; v <= maxScore; v += Math.max(1, maxScore / 5)) {
+    const y = padT + chartH - (v / maxScore) * chartH;
     ctx.beginPath();
     ctx.moveTo(padL, y);
     ctx.lineTo(w - padR, y);
     ctx.stroke();
   }
 
-  // Passing line at 6
+  // Passing line
   ctx.strokeStyle = 'rgba(255,215,0,0.3)';
   ctx.setLineDash([6, 4]);
-  const passY = padT + chartH - (6 / 10) * chartH;
+  const passY = padT + chartH - (passingScore / maxScore) * chartH;
   ctx.beginPath();
   ctx.moveTo(padL, passY);
   ctx.lineTo(w - padR, passY);
@@ -3791,15 +3479,15 @@ function renderScoreChart(practice) {
   ctx.fillStyle = 'rgba(255,255,255,0.4)';
   ctx.font = '11px -apple-system, system-ui, sans-serif';
   ctx.textAlign = 'right';
-  [0, 6, 10].forEach(v => {
-    const y = padT + chartH - (v / 10) * chartH;
+  [0, passingScore, maxScore].forEach(v => {
+    const y = padT + chartH - (v / maxScore) * chartH;
     ctx.fillText(v, padL - 6, y + 4);
   });
 
   // Plot points
   const points = recent.map((s, i) => {
     const x = padL + (recent.length === 1 ? chartW / 2 : (i / (recent.length - 1)) * chartW);
-    const y = padT + chartH - (s.score / 10) * chartH;
+    const y = padT + chartH - (s.score / maxScore) * chartH;
     return { x, y, score: s.score };
   });
 
@@ -3844,7 +3532,7 @@ function renderScoreChart(practice) {
   points.forEach(p => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-    ctx.fillStyle = p.score >= 6 ? '#FFD700' : '#BF0A30';
+    ctx.fillStyle = p.score >= passingScore ? '#FFD700' : '#BF0A30';
     ctx.fill();
     ctx.strokeStyle = '#001a4d';
     ctx.lineWidth = 2;
@@ -4213,10 +3901,10 @@ function renderSessionList(sessions) {
 /* ============================================================
    PROFILE MANAGEMENT
    ============================================================ */
-const PROFILE_EMOJIS = ['🇺🇸','🦅','⭐','🗽','📚','🎯','💪','🌟'];
+const PROFILE_EMOJIS = ['👷','📚','🎯','⭐','🗽','💪','🌟'];
 let _pinBuffer = '';
 let _pinTarget = null; // profile being PIN-verified
-let _createEmoji = '🇺🇸';
+let _createEmoji = CURRENT_USER.emoji;
 let _createPin = '';
 
 function showProfileScreen() {
@@ -4230,7 +3918,7 @@ function renderProfileGrid() {
   const profiles = getProfiles();
 
   profiles.forEach(p => {
-    const masteredPct = Math.round(((p.masteredCards || []).length / 100) * 100);
+    const masteredPct = Math.round(((p.masteredCards || []).length / TOTAL_QUESTIONS) * 100);
     const card = document.createElement('div');
     card.className = 'profile-card';
     card.innerHTML = `
@@ -4327,7 +4015,7 @@ function closePinModal() {
   _pinTarget = null;
 }
 
-function selectProfile(profile) {
+async function selectProfile(profile) {
   localStorage.setItem('civics_active_profile', profile.id);
   state.activeProfileId = profile.id;
   state.activeProfileName = profile.name;
@@ -4339,6 +4027,41 @@ function selectProfile(profile) {
   state.sessionHistory = profile.sessionHistory || [];
   updateHomeProgress();
   showScreen('home');
+  await loadCloudProgress();
+}
+
+function ensureSingleUserProfile() {
+  let profiles = getProfiles();
+  if (profiles.length === 0) {
+    const profile = {
+      id: generateProfileId(),
+      name: CURRENT_USER.name,
+      emoji: CURRENT_USER.emoji,
+      pinHash: null,
+      knownCards: [],
+      masteredCards: [],
+      correctStreak: {},
+      bestScore: null,
+      sessionHistory: [],
+      userId: CURRENT_USER.id,
+      authMode: AUTH_MODE,
+      createdAt: Date.now()
+    };
+    setProfiles([profile]);
+    return [profile];
+  }
+
+  const activeId = localStorage.getItem('civics_active_profile');
+  const targetIndex = Math.max(0, profiles.findIndex(p => p.id === activeId));
+  profiles[targetIndex] = {
+    ...profiles[targetIndex],
+    name: CURRENT_USER.name,
+    emoji: CURRENT_USER.emoji,
+    userId: CURRENT_USER.id,
+    authMode: AUTH_MODE
+  };
+  setProfiles(profiles);
+  return profiles;
 }
 
 function switchProfile() {
@@ -4347,7 +4070,7 @@ function switchProfile() {
 }
 
 function showCreateProfileModal() {
-  _createEmoji = '🇺🇸';
+  _createEmoji = CURRENT_USER.emoji;
   _createPin = '';
   document.getElementById('create-confirm').disabled = true;
 
@@ -4371,7 +4094,7 @@ function showCreateProfileModal() {
 
 async function confirmCreateProfile() {
   if (_createPin.length !== 4) return;
-  const name = 'Laura';
+  const name = CURRENT_USER.name;
 
   const profile = {
     id: generateProfileId(),
@@ -4445,23 +4168,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Migrate old single-user data to profile system
   migrateOldData();
 
-  let profiles = getProfiles();
+  let profiles = ensureSingleUserProfile();
 
-  // Auto-create Laura's profile if none exist
-  if (profiles.length === 0) {
-    const id = generateProfileId();
-    const profile = {
-      id, name: 'Laura', emoji: '🇺🇸', pinHash: null,
-      knownCards: [], masteredCards: [], correctStreak: {},
-      bestScore: null, sessionHistory: [], createdAt: Date.now()
-    };
-    const all = getProfiles();
-    all.push(profile);
-    localStorage.setItem('civics_profiles', JSON.stringify(all));
-    profiles = [profile];
-  }
-
-  // Always auto-login first profile (Laura)
+  // Always auto-login first profile
   selectProfile(profiles[0]);
 });
 
