@@ -3,15 +3,17 @@
    Caches all core assets for full offline support
    ============================================================= */
 
-const CACHE_NAME = 'civics-quiz-v7';
+const CACHE_NAME = 'civics-quiz-v8';
 const FILES_TO_CACHE = [
   './index.html',
   './questions-2025.js',
+  './contractors-data.js',
   './manifest.json',
   './sw.js',
   './icon-192.svg',
   './icon-512.svg',
-  './american-flag.png'
+  './american-flag.png',
+  './RGCI Logo.svg'
 ];
 
 /* Install: pre-cache all files */

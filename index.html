@@ -80,6 +80,33 @@
       z-index: 0;
       pointer-events: none;
     }
+    #flag-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+    body.contractors-mode {
+      background: #050505;
+      background-image:
+        radial-gradient(ellipse 70% 55% at 50% 12%, rgba(251,188,16,0.13) 0%, transparent 54%),
+        radial-gradient(ellipse 80% 60% at 18% 48%, rgba(95,95,95,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 70% at 82% 72%, rgba(251,188,16,0.07) 0%, transparent 58%),
+        linear-gradient(180deg, #0b0b0b 0%, #040404 100%);
+    }
+    body.contractors-mode #flag-bg {
+      background: none;
+      opacity: 1;
+    }
+    body.contractors-mode #flag-bg::before {
+      display: block;
+      inset: -18%;
+      background: url('./RGCI%20Logo.svg') center/112vmin no-repeat;
+      opacity: 0.065;
+      transform: rotate(-8deg);
+      filter: grayscale(1) contrast(1.2);
+    }
+    }
 
     /* App frame — rounded corners that mask the viewport edges */
     #app-frame {
@@ -97,7 +124,7 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      padding-top: var(--safe-top);
+      padding-top: calc(var(--safe-top) + 62px);
       padding-bottom: var(--safe-bot);
       animation: fadeIn 0.35s var(--ease-out);
       overflow-y: auto;
@@ -121,13 +148,16 @@
       -webkit-backdrop-filter: var(--glass-blur);
       backdrop-filter: var(--glass-blur);
       padding: 14px 20px 12px;
+      width: min(448px, calc(100% - 32px)) !important;
+      margin: 0 auto 10px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid rgba(255,215,0,0.18);
+      border: 1px solid rgba(255,215,0,0.18);
+      border-radius: var(--radius);
       box-shadow: var(--glass-inset), 0 4px 20px rgba(0,0,0,0.15);
       position: sticky;
-      top: 0;
+      top: 10px;
       z-index: 10;
       flex-shrink: 0;
     }
@@ -167,7 +197,10 @@
     }
     #screen-home > .progress-link-btn,
     #screen-home > .mastery-bar-wrap,
-    #screen-home > .home-footer {
+    #screen-home > .home-footer,
+    #screen-home > .mode-grid,
+    #screen-home > .study-switch,
+    #screen-home > .contractor-panel {
       width: 448px !important;
       max-width: calc(100% - 32px) !important;
     }
@@ -180,15 +213,22 @@
       font-size: 48px;
       display: block;
       margin-bottom: 6px;
-      animation: wave 2.5s ease-in-out infinite;
-      transform-origin: 70% 90%;
+      animation: logoFloat 3s ease-in-out infinite;
+      transform-origin: center;
     }
-    @keyframes wave {
-      0%, 100% { transform: rotate(0deg); }
-      20%       { transform: rotate(8deg); }
-      40%       { transform: rotate(-4deg); }
-      60%       { transform: rotate(6deg); }
-      80%       { transform: rotate(-2deg); }
+    .home-hero .flag-emoji.logo-mark {
+      transform-origin: center;
+    }
+    .hero-logo-image {
+      width: 58px;
+      height: 52px;
+      object-fit: contain;
+      display: inline-block;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,0.35));
+    }
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-4px); }
     }
     .home-hero h1 {
       font-size: 24px;
@@ -205,32 +245,85 @@
       font-weight: 500;
     }
 
-    .stars-row {
+    .study-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 0 auto 10px;
+    }
+    .study-switch-btn {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .study-switch-btn:active { transform: scale(0.97); }
+    .study-switch-btn.active {
+      background: rgba(255,215,0,0.16);
+      color: var(--white);
+      border-color: rgba(255,215,0,0.38);
+      box-shadow: var(--glass-glow);
+    }
+
+    .contractor-panel {
+      margin: 0 auto 10px;
       display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 8px;
+      flex-direction: column;
+      gap: 8px;
     }
-    .star-dot {
-      width: 8px; height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      opacity: 0.4;
-      animation: pulse-dot 1.8s ease-in-out infinite;
+    .contractor-note {
+      background: rgba(0,40,104,0.32);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      color: rgba(255,255,255,0.74);
+      font-size: 11px;
+      line-height: 1.45;
+      text-align: center;
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
     }
-    .star-dot:nth-child(2) { animation-delay: 0.3s; }
-    .star-dot:nth-child(3) { animation-delay: 0.6s; }
-    .star-dot:nth-child(4) { animation-delay: 0.9s; }
-    .star-dot:nth-child(5) { animation-delay: 1.2s; }
-    @keyframes pulse-dot {
-      0%,100% { opacity: 0.4; transform: scale(1); }
-      50%      { opacity: 1;   transform: scale(1.4); }
+    .contractor-tools {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+    .contractor-select {
+      width: 100%;
+      min-width: 0;
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius-sm);
+      padding: 11px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .contractor-select option { color: #101828; }
+    .sources-btn {
+      border: 1px solid rgba(255,215,0,0.32);
+      background: rgba(255,215,0,0.1);
+      color: var(--gold);
+      border-radius: var(--radius-sm);
+      padding: 11px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
     }
 
     .mode-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+      grid-auto-rows: 116px;
       padding: 0 0 10px;
     }
     .mode-card {
@@ -239,9 +332,15 @@
       backdrop-filter: var(--glass-blur);
       border: var(--glass-border);
       border-radius: var(--radius);
-      padding: 14px 12px;
+      padding: 12px;
       text-align: center;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 0;
       transition: transform 0.22s var(--ease-out), background 0.22s, border-color 0.22s, box-shadow 0.22s;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
@@ -262,16 +361,96 @@
       font-weight: 700;
       color: var(--white);
       margin-bottom: 5px;
+      width: 100%;
     }
     .mode-card .mode-desc {
       font-size: 12px;
       color: rgba(255,255,255,0.6);
       line-height: 1.4;
+      width: 100%;
+      max-width: 180px;
     }
     .mode-card.highlight {
       background: rgba(255,215,0,0.1);
       border: 1px solid rgba(255,215,0,0.3);
       box-shadow: var(--glass-glow), var(--glass-shadow), var(--glass-inset);
+    }
+
+    body.contractors-mode .header,
+    body.contractors-mode .speed-header {
+      background: rgba(5,5,5,0.78);
+      border-color: rgba(251,188,16,0.32);
+    }
+    body.contractors-mode .profile-indicator,
+    body.contractors-mode .main-menu,
+    body.contractors-mode .progress-summary,
+    body.contractors-mode .progress-link-btn,
+    body.contractors-mode .contractor-note,
+    body.contractors-mode .contractor-select,
+    body.contractors-mode .sources-sheet,
+    body.contractors-mode .cat-mode-sheet,
+    body.contractors-mode .flashcard-progress,
+    body.contractors-mode #install-banner {
+      background: rgba(12,12,12,0.74);
+      border-color: rgba(251,188,16,0.22);
+    }
+    body.contractors-mode .menu-row,
+    body.contractors-mode .mode-card,
+    body.contractors-mode .cat-card,
+    body.contractors-mode .choice-btn,
+    body.contractors-mode .pg-stat-card,
+    body.contractors-mode .pg-section,
+    body.contractors-mode .pg-q-card,
+    body.contractors-mode .install-guide,
+    body.contractors-mode .source-item {
+      background: rgba(28,28,28,0.72);
+      border-color: rgba(160,160,160,0.18);
+    }
+    body.contractors-mode .mode-card.highlight,
+    body.contractors-mode .study-switch-btn.active,
+    body.contractors-mode .menu-row.active {
+      background: rgba(251,188,16,0.11);
+      border-color: rgba(251,188,16,0.48);
+      box-shadow: 0 0 24px rgba(251,188,16,0.13), var(--glass-shadow), var(--glass-inset);
+    }
+    body.contractors-mode .study-switch-btn,
+    body.contractors-mode .sources-btn,
+    body.contractors-mode .btn-secondary,
+    body.contractors-mode .fc-reveal-btn,
+    body.contractors-mode .fc-nav-btn {
+      background: linear-gradient(145deg, rgba(28,28,28,0.96), rgba(8,8,8,0.96));
+      border-color: rgba(251,188,16,0.2);
+      color: rgba(255,255,255,0.92);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    body.contractors-mode .fc-known-btn {
+      background: linear-gradient(135deg, rgba(251,188,16,0.95), rgba(216,155,0,0.95));
+      color: #070707;
+      border: 1px solid rgba(251,188,16,0.72);
+      box-shadow: 0 0 22px rgba(251,188,16,0.22), inset 0 1px 0 rgba(255,255,255,0.28);
+    }
+    body.contractors-mode .flashcard-front,
+    body.contractors-mode .flashcard-back {
+      background: linear-gradient(145deg, rgba(28,28,28,0.92), rgba(7,7,7,0.9));
+      border-color: rgba(251,188,16,0.2);
+    }
+    body.contractors-mode .flashcard-back {
+      background: linear-gradient(145deg, rgba(34,34,34,0.94), rgba(10,10,10,0.92));
+    }
+    body.contractors-mode .progress-bar-fill,
+    body.contractors-mode .mastery-bar-fill {
+      background: linear-gradient(90deg, #fbbc10, #d89b00);
+    }
+    body.contractors-mode .next-btn,
+    body.contractors-mode .btn-primary {
+      background: linear-gradient(135deg, #fbbc10, #d89b00);
+      color: #080808;
+    }
+    body.contractors-mode .home-message,
+    body.contractors-mode .mode-card .mode-desc,
+    body.contractors-mode .contractor-note,
+    body.contractors-mode .menu-row-desc {
+      color: rgba(230,230,230,0.72);
     }
 
     .home-footer {
@@ -292,6 +471,20 @@
       box-shadow: var(--glass-shadow);
     }
     .progress-summary strong { color: var(--gold); }
+
+    .home-message {
+      width: 448px !important;
+      max-width: calc(100% - 32px) !important;
+      margin: 18px auto 12px;
+      padding: 0 8px;
+      color: rgba(255,255,255,0.74);
+      font-size: 13px;
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1.55;
+      text-align: center;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.45);
+    }
 
     /* ============================================================
        PROGRESS BAR (practice test)
@@ -469,6 +662,22 @@
       backdrop-filter: blur(12px);
     }
     .feedback-toast.show { display: flex; }
+    .feedback-toast.with-explanation {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .feedback-toast .feedback-line {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .feedback-toast .feedback-explanation {
+      color: rgba(255,255,255,0.74);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.45;
+    }
     .feedback-toast.correct-toast {
       background: rgba(26,127,55,0.2);
       color: #5CD68A;
@@ -737,7 +946,8 @@
     .flashcard-wrap {
       width: 100%;
       max-width: 420px;
-      height: 100%;
+      height: min(54vh, 320px);
+      min-height: 260px;
       max-height: 320px;
       position: relative;
       transform-style: preserve-3d;
@@ -833,6 +1043,28 @@
       color: var(--gold);
       font-size: 10px;
     }
+    .fc-explanation {
+      margin-top: 10px;
+      color: rgba(255,255,255,0.72);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .fc-source {
+      margin-top: 10px;
+      color: rgba(255,215,0,0.7);
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .fc-source a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 800;
+    }
+    .fc-source-note {
+      color: rgba(255,255,255,0.62);
+      font-weight: 500;
+    }
     .fc-variable-note {
       font-size: 11px;
       color: rgba(255,215,0,0.7);
@@ -893,6 +1125,12 @@
     .fc-known-btn.known {
       background: rgba(26,127,55,0.25);
       color: #5CD68A;
+    }
+    body.contractors-mode .fc-known-btn.known {
+      background: rgba(26,127,55,0.28);
+      color: #5CD68A;
+      border-color: rgba(92,214,138,0.36);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
     }
     .fc-known-btn:active { transform: scale(0.97); }
 
@@ -1196,6 +1434,62 @@
       width: 100%;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    .sources-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,10,31,0.64);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      z-index: 220;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0 20px 20px;
+    }
+    .sources-modal.hidden { display: none; }
+    .sources-sheet {
+      width: 100%;
+      max-width: 520px;
+      max-height: min(620px, calc(100vh - 56px));
+      overflow-y: auto;
+      background: rgba(8,20,54,0.94);
+      -webkit-backdrop-filter: blur(30px);
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: var(--radius-lg) var(--radius-lg) var(--radius) var(--radius);
+      padding: 20px;
+      box-shadow: var(--glass-shadow);
+      animation: sheetSlide 0.3s var(--ease-out);
+    }
+    .sources-title {
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .sources-intro {
+      color: rgba(255,255,255,0.68);
+      font-size: 12px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+    .source-item {
+      padding: 12px 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .source-item a {
+      color: var(--gold);
+      font-weight: 800;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .source-item p {
+      margin-top: 4px;
+      color: rgba(255,255,255,0.66);
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     /* ============================================================
@@ -1558,8 +1852,13 @@
     .create-confirm:disabled { opacity: 0.35; cursor: default; }
     .create-confirm:active:not(:disabled) { transform: scale(0.97); }
 
-    /* Profile indicator on home screen */
+    /* Persistent Javier menu */
     .profile-indicator {
+      position: fixed;
+      top: calc(var(--safe-top) + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 260;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -1572,13 +1871,161 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.15s;
       -webkit-tap-highlight-color: transparent;
-      margin-bottom: 6px;
       font-family: var(--font);
+      box-shadow: var(--glass-shadow), var(--glass-inset);
     }
-    .profile-indicator:active { transform: scale(0.96); background: var(--glass-bg-hover); }
+    .profile-indicator:active { transform: translateX(-50%) scale(0.96); background: var(--glass-bg-hover); }
+    .profile-indicator.menu-open {
+      border-color: rgba(255,215,0,0.38);
+      box-shadow: var(--glass-glow), var(--glass-shadow), var(--glass-inset);
+    }
     .pi-emoji { font-size: 22px; flex-shrink: 0; }
     .pi-name { font-size: 13px; font-weight: 600; color: var(--white); white-space: nowrap; }
+    .pi-menu-icon {
+      width: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+    .pi-menu-icon span {
+      display: block;
+      height: 2px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.86);
+    }
     .pi-switch { display: none; }
+
+    .main-menu-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 240;
+      background: rgba(0,10,31,0.1);
+    }
+    .main-menu-backdrop.hidden { display: none; }
+    .main-menu {
+      position: fixed;
+      top: calc(var(--safe-top) + 58px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(448px, calc(100% - 32px));
+      max-height: min(720px, calc(100vh - var(--safe-top) - 84px));
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,215,0,0.55) rgba(255,255,255,0.06);
+      scrollbar-gutter: stable;
+      z-index: 270;
+      background: rgba(8,20,54,0.96);
+      -webkit-backdrop-filter: blur(34px) saturate(190%);
+      backdrop-filter: blur(34px) saturate(190%);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--glass-shadow);
+      animation: slideUp 0.22s var(--ease-out);
+    }
+    .main-menu::-webkit-scrollbar {
+      width: 10px;
+    }
+    .main-menu::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+      margin: 12px 0;
+    }
+    .main-menu::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(255,215,0,0.78), rgba(26,96,172,0.78));
+      border: 2px solid rgba(8,20,54,0.96);
+      border-radius: 999px;
+    }
+    .main-menu::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, rgba(255,215,0,0.92), rgba(38,128,210,0.92));
+    }
+    .main-menu.hidden { display: none; }
+    .menu-section {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .menu-section:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+    .menu-label {
+      color: rgba(255,255,255,0.52);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 2px 4px 8px;
+    }
+    .menu-row {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      padding: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      font-family: var(--font);
+      cursor: pointer;
+    }
+    .menu-row:active { background: rgba(255,255,255,0.12); }
+    .menu-row.active {
+      border-color: rgba(255,215,0,0.36);
+      background: rgba(255,215,0,0.11);
+    }
+    .menu-row-icon { font-size: 22px; width: 28px; text-align: center; flex-shrink: 0; }
+    .menu-row-main { flex: 1; min-width: 0; }
+    .menu-row-title { font-size: 14px; font-weight: 800; }
+    .menu-row-desc {
+      margin-top: 2px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.35;
+    }
+    .install-guide {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      color: rgba(255,255,255,0.76);
+    }
+    .install-guide.hidden { display: none; }
+    .install-guide h3 {
+      color: var(--white);
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .install-guide h4 {
+      color: var(--gold);
+      font-size: 12px;
+      margin: 12px 0 5px;
+    }
+    .install-guide ol {
+      padding-left: 18px;
+      font-size: 12px;
+      line-height: 1.48;
+    }
+    .install-guide li { margin-bottom: 5px; }
+    .install-note {
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.62);
+      line-height: 1.45;
+    }
+    .install-link {
+      display: block;
+      color: var(--gold);
+      font-size: 11px;
+      overflow-wrap: anywhere;
+      font-weight: 700;
+      text-decoration: none;
+    }
 
     /* Mastery progress on home */
     .mastery-bar-wrap {
@@ -1613,6 +2060,7 @@
     .progress-link-btn {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
       width: min(calc(100% - 32px), 448px);
       margin: 0 0 8px;
@@ -1630,11 +2078,26 @@
       transition: transform 0.22s var(--ease-out), background 0.22s, box-shadow 0.22s;
       -webkit-tap-highlight-color: transparent;
       box-shadow: var(--glass-shadow), var(--glass-inset);
+      position: relative;
     }
     .progress-link-btn:active { transform: scale(0.97); background: var(--glass-bg-hover); box-shadow: var(--glass-glow), var(--glass-shadow); }
-    .plb-icon { font-size: 24px; }
-    .plb-text { flex: 1; text-align: left; }
-    .plb-arrow { font-size: 22px; color: var(--gold); font-weight: 300; }
+    .plb-icon {
+      font-size: 24px;
+      position: absolute;
+      left: 16px;
+    }
+    .plb-text {
+      flex: 0 1 auto;
+      text-align: center;
+      padding: 0 36px;
+    }
+    .plb-arrow {
+      font-size: 22px;
+      color: var(--gold);
+      font-weight: 300;
+      position: absolute;
+      right: 16px;
+    }
 
     /* ============================================================
        PROGRESS SCREEN
@@ -1854,11 +2317,9 @@
       .home-hero .flag-emoji { font-size: 42px; margin-bottom: 6px; }
       .home-hero h1 { font-size: 22px; }
       .home-hero p { font-size: 13px; margin-top: 4px; }
-      .stars-row { margin-top: 8px; }
-      .star-dot { width: 6px; height: 6px; }
 
       /* Mode grid */
-      .mode-grid { gap: 10px; padding: 0 0 10px; }
+      .mode-grid { gap: 10px; grid-auto-rows: 104px; padding: 0 0 10px; }
       .mode-card { padding: 12px 10px; }
       .mode-card .mode-icon { font-size: 28px; margin-bottom: 6px; }
       .mode-card .mode-title { font-size: 13px; margin-bottom: 3px; }
@@ -1867,9 +2328,12 @@
       /* Home footer */
       #screen-home > .progress-link-btn,
       #screen-home > .mastery-bar-wrap,
-      #screen-home > .home-footer {
-        width: 452px !important;
-        max-width: calc(100% - 28px) !important;
+      #screen-home > .home-footer,
+      #screen-home > .mode-grid,
+      #screen-home > .study-switch,
+      #screen-home > .contractor-panel {
+        width: 448px !important;
+        max-width: calc(100% - 32px) !important;
       }
       .mastery-bar-wrap { padding-left: 0; padding-right: 0; }
       .home-footer { padding: 6px 0 10px; }
@@ -1894,7 +2358,7 @@
       /* Flashcard screen */
       .flashcard-progress { padding: 4px 16px 0; font-size: 12px; }
       .flashcard-scene { padding: 6px 14px; }
-      .flashcard-wrap { height: 210px; }
+      .flashcard-wrap { height: 210px; min-height: 210px; }
       .flashcard-face { padding: 14px 16px; }
       .fc-category { font-size: 10px; margin-bottom: 6px; }
       .fc-number { font-size: 12px; margin-bottom: 8px; }
@@ -1940,6 +2404,76 @@
 <div id="app-frame">
 
 <canvas id="confetti-canvas"></canvas>
+
+<button class="profile-indicator" id="profile-indicator" onclick="toggleMainMenu()" aria-haspopup="true" aria-expanded="false" aria-label="Open Javier menu">
+  <span class="pi-emoji" id="pi-emoji">👷</span>
+  <span class="pi-name" id="pi-name">Player</span>
+  <span class="pi-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+</button>
+
+<div class="main-menu-backdrop hidden" id="main-menu-backdrop" onclick="closeMainMenu()"></div>
+<nav class="main-menu hidden" id="main-menu" aria-label="Javier menu">
+  <div class="menu-section">
+    <div class="menu-label">Study Guide</div>
+    <button class="menu-row" id="menu-citizenship" onclick="chooseGuideFromMenu('citizenship')">
+      <span class="menu-row-icon">🇺🇸</span>
+      <span class="menu-row-main">
+        <span class="menu-row-title">Citizenship Study Guide</span>
+        <span class="menu-row-desc">2025 U.S. Civics Quiz and progress.</span>
+      </span>
+    </button>
+    <button class="menu-row" id="menu-contractors" onclick="chooseGuideFromMenu('contractors')">
+      <span class="menu-row-icon">🏗️</span>
+      <span class="menu-row-main">
+        <span class="menu-row-title">Contractors Study Guide</span>
+        <span class="menu-row-desc">CSLB-aligned starter practice set.</span>
+      </span>
+    </button>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-label">Quick Actions</div>
+    <button class="menu-row" onclick="goHomeFromMenu()">
+      <span class="menu-row-icon">🏠</span>
+      <span class="menu-row-main">
+        <span class="menu-row-title">Home</span>
+        <span class="menu-row-desc">Return to the current study guide tiles.</span>
+      </span>
+    </button>
+    <button class="menu-row" onclick="showProgressFromMenu()">
+      <span class="menu-row-icon">📊</span>
+      <span class="menu-row-main">
+        <span class="menu-row-title">View Progress</span>
+        <span class="menu-row-desc">See scores, mastered questions, and recent sessions.</span>
+      </span>
+    </button>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-label">Install Web App</div>
+    <button class="menu-row" onclick="toggleInstallGuide()">
+      <span class="menu-row-icon">📲</span>
+      <span class="menu-row-main">
+        <span class="menu-row-title">Install on Home Screen</span>
+        <span class="menu-row-desc">Javier, save this to your iPhone Home Screen.</span>
+      </span>
+    </button>
+    <div class="install-guide hidden" id="install-guide">
+      <h3>Javier, Install This Study Guide</h3>
+      <a class="install-link" href="https://creativesilva.github.io/civics-quiz/" target="_blank" rel="noopener">https://creativesilva.github.io/civics-quiz/</a>
+      <h4>iPhone, Safari</h4>
+      <ol>
+        <li>Javier, open the link above in Safari on your iPhone.</li>
+        <li>Tap the Share button at the bottom of Safari.</li>
+        <li>Scroll down and tap Add to Home Screen.</li>
+        <li>Keep the name Study Guide, or rename it if you want.</li>
+        <li>Tap Add. The Study Guide icon will appear on your Home Screen.</li>
+        <li>Next time, open it from that Home Screen icon so it functions like an app.</li>
+      </ol>
+      <div class="install-note">Your progress is saved on this iPhone. Use the Home Screen icon after installing so you do not need to find the website link each time.</div>
+    </div>
+  </div>
+</nav>
 
 <!-- ================================================================
      SCREEN: PROFILES
@@ -1992,18 +2526,22 @@
      ================================================================ -->
 <section id="screen-home" class="screen" role="main">
   <div class="home-hero">
-    <div class="profile-indicator" id="profile-indicator">
-      <span class="pi-emoji" id="pi-emoji">👷</span>
-      <span class="pi-name" id="pi-name">Player</span>
+    <span class="flag-emoji" id="home-hero-icon" aria-hidden="true">🇺🇸</span>
+    <h1 id="home-title">U.S. Citizenship <span>Study Guide</span></h1>
+    <p id="home-subtitle">2025 Edition U.S. Civics Quiz</p>
+  </div>
+
+  <div class="study-switch" role="tablist" aria-label="Study guide">
+    <button class="study-switch-btn active" id="guide-citizenship-btn" onclick="setStudyGuide('citizenship')" role="tab">🇺🇸 Citizenship</button>
+    <button class="study-switch-btn" id="guide-contractors-btn" onclick="setStudyGuide('contractors')" role="tab">🏗️ Contractors</button>
+  </div>
+
+  <div class="contractor-panel hidden" id="contractor-panel">
+    <div class="contractor-tools">
+      <select class="contractor-select" id="contractor-exam-select" onchange="setContractorExam(this.value)" aria-label="Contractor study topic"></select>
+      <button class="sources-btn" onclick="showSourcesModal()">Sources</button>
     </div>
-    <span class="flag-emoji" aria-hidden="true">🇺🇸</span>
-    <h1>U.S. Citizenship <span>Study Guide</span></h1>
-    <p>2025 Edition U.S. Civics Quiz</p>
-    <div class="stars-row" aria-hidden="true">
-      <div class="star-dot"></div><div class="star-dot"></div>
-      <div class="star-dot"></div><div class="star-dot"></div>
-      <div class="star-dot"></div>
-    </div>
+    <div class="contractor-note">CSLB-aligned practice questions are rolling out in stages. New questions will appear automatically, no reinstall needed.</div>
   </div>
 
   <div class="mode-grid" role="list">
@@ -2011,13 +2549,13 @@
          onclick="startPracticeTest()" onkeydown="if(event.key==='Enter')startPracticeTest()">
       <span class="mode-icon" aria-hidden="true">🎯</span>
       <div class="mode-title">Practice Test</div>
-      <div class="mode-desc">20 questions, full practice test</div>
+      <div class="mode-desc" id="practice-mode-desc">20 questions, full practice test</div>
     </div>
     <div class="mode-card" role="listitem" tabindex="0"
          onclick="startFlashcards()" onkeydown="if(event.key==='Enter')startFlashcards()">
       <span class="mode-icon" aria-hidden="true">🃏</span>
       <div class="mode-title">Flashcards</div>
-      <div class="mode-desc">Review all 128 questions at your pace</div>
+      <div class="mode-desc" id="flashcard-mode-desc">Review all 128 questions at your pace</div>
     </div>
     <div class="mode-card" role="listitem" tabindex="0"
          onclick="startSpeedRound()" onkeydown="if(event.key==='Enter')startSpeedRound()">
@@ -2044,6 +2582,10 @@
     <div class="mastery-bar-track">
       <div class="mastery-bar-fill" id="home-mastery-fill" style="width:0%"></div>
     </div>
+  </div>
+
+  <div class="home-message">
+    Javier, I believed in you from day one. I saw your potential, and now you’re proving it. You’re crushing it cuñado, these next goals are already yours. I’m here backing you all the way. Let’s get it!
   </div>
 
   <div class="home-footer">
@@ -2237,6 +2779,15 @@
       <button class="cat-mode-cancel" onclick="closeCatModal(null)">Cancel</button>
     </div>
   </div>
+
+  <div class="sources-modal hidden" id="sources-modal" onclick="closeSourcesModal(event)">
+    <div class="sources-sheet">
+      <div class="sources-title">Study Sources</div>
+      <div class="sources-intro">The contractor track uses original practice questions organized around CSLB-published study guide topics.</div>
+      <div id="sources-list"></div>
+      <button class="cat-mode-cancel" onclick="closeSourcesModal(null)">Close</button>
+    </div>
+  </div>
 </section>
 
 <!-- ================================================================
@@ -2328,6 +2879,7 @@
 </script>
 
 <script src="./questions-2025.js"></script>
+<script src="./contractors-data.js"></script>
 
 <!-- ================================================================
      MAIN APP SCRIPT
@@ -2338,8 +2890,12 @@
 /* ============================================================
    QUESTION DATA - loaded from questions-2025.js
    ============================================================ */
-const questions = Array.isArray(window.QUESTIONS_2025) ? window.QUESTIONS_2025 : [];
-const TOTAL_QUESTIONS = questions.length;
+const CIVICS_QUESTIONS = Array.isArray(window.QUESTIONS_2025) ? window.QUESTIONS_2025 : [];
+const CONTRACTORS_STUDY = window.CONTRACTORS_STUDY || { sources: [], exams: [], questions: [] };
+let currentStudyGuide = localStorage.getItem('civics_current_study_guide') || 'citizenship';
+let currentContractorExam = localStorage.getItem('civics_current_contractor_exam') || 'general-building-b';
+let questions = getQuestionsForCurrentStudyGuide();
+let TOTAL_QUESTIONS = questions.length;
 const PASSING_SCORE_2025 = 12;
 const PRACTICE_QUESTION_COUNT = 20;
 const FIREBASE_CONFIG = {
@@ -2362,15 +2918,104 @@ let cloudLoadComplete = false;
 /* ============================================================
    CATEGORY CONFIG
    ============================================================ */
-const CATEGORIES = [
-  { name:"Principles of American Government", icon:"⚖️",  color:"#1a3a8f", questions: questions.filter(q=>q.category==="Principles of American Government") },
-  { name:"System of Government",              icon:"🏛️",  color:"#5a1a8f", questions: questions.filter(q=>q.category==="System of Government") },
-  { name:"Rights and Responsibilities",       icon:"✍️", color:"#8f1a3a", questions: questions.filter(q=>q.category==="Rights and Responsibilities") },
-  { name:"Colonial Period and Independence",  icon:"🪶",  color:"#6b4000", questions: questions.filter(q=>q.category==="Colonial Period and Independence") },
-  { name:"1800s",                             icon:"📜",  color:"#005a5a", questions: questions.filter(q=>q.category==="1800s") },
-  { name:"Recent American History",           icon:"🗽",  color:"#004a00", questions: questions.filter(q=>q.category==="Recent American History") },
-  { name:"Symbols and Holidays",              icon:"⭐",  color:"#7a4300", questions: questions.filter(q=>q.category==="Symbols and Holidays") }
-];
+let CATEGORIES = [];
+
+const CATEGORY_META = {
+  "Principles of American Government": { icon:"⚖️", color:"#1a3a8f" },
+  "System of Government": { icon:"🏛️", color:"#5a1a8f" },
+  "Rights and Responsibilities": { icon:"✍️", color:"#8f1a3a" },
+  "Colonial Period and Independence": { icon:"🪶", color:"#6b4000" },
+  "1800s": { icon:"📜", color:"#005a5a" },
+  "Recent American History": { icon:"🗽", color:"#004a00" },
+  "Symbols and Holidays": { icon:"⭐", color:"#7a4300" },
+  "Planning and Estimating": { icon:"📐", color:"#005a7a" },
+  "Framing and Structural Components": { icon:"🏗️", color:"#5a3f00" },
+  "Core Trades": { icon:"🔧", color:"#1a5a8f" },
+  "Finish Trades": { icon:"🧰", color:"#6b3a8f" },
+  "Safety": { icon:"🦺", color:"#8f4a00" },
+  "Licensing": { icon:"📋", color:"#1a7a5a" },
+  "Business Operations": { icon:"⚖️", color:"#7a2f5a" }
+};
+
+CATEGORIES = buildCategoriesFromQuestions(questions);
+
+function getQuestionsForCurrentStudyGuide() {
+  if (currentStudyGuide === 'contractors') {
+    const items = CONTRACTORS_STUDY.questions || [];
+    const selected = items.filter(q => q.examId === currentContractorExam);
+    return (selected.length ? selected : items).map(adaptContractorQuestion);
+  }
+  return CIVICS_QUESTIONS;
+}
+
+function adaptContractorQuestion(item) {
+  return {
+    id: item.id,
+    question: item.question,
+    primary: item.answer,
+    answers: [item.answer],
+    choices: item.choices || [],
+    category: item.section || item.exam || 'Contractors',
+    variable: false,
+    explanation: item.explanation || '',
+    source: item.source || null,
+    studyGuide: item.studyGuide,
+    examId: item.examId,
+    exam: item.exam,
+    topic: item.topic,
+    difficulty: item.difficulty,
+    tags: item.tags || []
+  };
+}
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
+function getSourceText(source) {
+  if (!source) return '';
+  if (typeof source === 'string') return source;
+  const label = source.label || source.title || 'Source';
+  return source.note ? `${label} - ${source.note}` : label;
+}
+
+function getSourceHTML(source) {
+  if (!source) return '';
+  if (typeof source === 'string') return escapeHTML(source);
+  const label = escapeHTML(source.label || source.title || 'Source');
+  const note = source.note ? ` <span class="fc-source-note">${escapeHTML(source.note)}</span>` : '';
+  if (source.url) {
+    return `<a href="${escapeHTML(source.url)}" target="_blank" rel="noopener">${label}</a>${note}`;
+  }
+  return `${label}${note}`;
+}
+
+function buildCategoriesFromQuestions(pool) {
+  const names = [...new Set(pool.map(q => q.category))];
+  return names.map((name, index) => {
+    const meta = CATEGORY_META[name] || { icon: '📘', color: ['#1a3a8f','#5a1a8f','#005a5a','#6b4000','#8f1a3a'][index % 5] };
+    return {
+      name,
+      icon: meta.icon,
+      color: meta.color,
+      questions: pool.filter(q => q.category === name)
+    };
+  });
+}
+
+function rebuildStudyData() {
+  questions = getQuestionsForCurrentStudyGuide();
+  TOTAL_QUESTIONS = questions.length;
+  CATEGORIES = buildCategoriesFromQuestions(questions);
+  state.flashcardPool = [...questions];
+  state.flashcardIndex = 0;
+}
 
 /* ============================================================
    STATE
@@ -2487,12 +3132,63 @@ function loadStorage() {
     state.activeProfileId = p.id;
     state.activeProfileName = p.name;
     state.activeProfileEmoji = p.emoji;
-    state.knownCards = new Set(p.knownCards || []);
-    state.masteredCards = new Set(p.masteredCards || []);
-    state.correctStreak = p.correctStreak || {};
-    state.bestScore = p.bestScore;
-    state.sessionHistory = p.sessionHistory || [];
+    applyLocalStudyProgress(p);
   } catch(e) { /* ignore */ }
+}
+
+function getProgressScopeKey() {
+  return currentStudyGuide === 'contractors'
+    ? `civics_progress:${state.activeProfileId || CURRENT_USER.id}:contractors:${currentContractorExam}`
+    : `civics_progress:${state.activeProfileId || CURRENT_USER.id}:citizenship`;
+}
+
+function getEmptyStudyProgress() {
+  return {
+    knownCards: [],
+    masteredCards: [],
+    correctStreak: {},
+    bestScore: null,
+    sessionHistory: []
+  };
+}
+
+function applyLocalStudyProgress(profile = null) {
+  let progress = null;
+  try {
+    const raw = localStorage.getItem(getProgressScopeKey());
+    progress = raw ? JSON.parse(raw) : null;
+  } catch(e) {
+    progress = null;
+  }
+  if (!progress && currentStudyGuide === 'citizenship' && profile) {
+    progress = {
+      knownCards: profile.knownCards || [],
+      masteredCards: profile.masteredCards || [],
+      correctStreak: profile.correctStreak || {},
+      bestScore: profile.bestScore ?? null,
+      sessionHistory: profile.sessionHistory || []
+    };
+  }
+  progress = progress || getEmptyStudyProgress();
+  state.knownCards = new Set(progress.knownCards || []);
+  state.masteredCards = new Set(progress.masteredCards || []);
+  state.correctStreak = progress.correctStreak || {};
+  state.bestScore = progress.bestScore ?? null;
+  state.sessionHistory = Array.isArray(progress.sessionHistory) ? progress.sessionHistory.slice(-100) : [];
+}
+
+function saveStudyProgressSnapshot() {
+  try {
+    if (!state.activeProfileId) return;
+    localStorage.setItem(getProgressScopeKey(), JSON.stringify({
+      knownCards: [...state.knownCards],
+      masteredCards: [...state.masteredCards],
+      correctStreak: state.correctStreak,
+      bestScore: state.bestScore,
+      sessionHistory: state.sessionHistory.slice(-100),
+      savedAt: new Date().toISOString()
+    }));
+  } catch(e) {}
 }
 
 function getProgressSnapshot() {
@@ -2501,6 +3197,9 @@ function getProgressSnapshot() {
     activeProfileId: state.activeProfileId,
     activeProfileName: state.activeProfileName,
     activeProfileEmoji: state.activeProfileEmoji,
+    studyGuide: currentStudyGuide,
+    contractorExam: currentStudyGuide === 'contractors' ? currentContractorExam : null,
+    progressScope: getProgressScopeKey(),
     knownCards: [...state.knownCards],
     masteredCards: [...state.masteredCards],
     correctStreak: state.correctStreak,
@@ -2512,6 +3211,8 @@ function getProgressSnapshot() {
 
 function applyProgressSnapshot(data) {
   if (!data || !state.activeProfileId) return;
+  if (data.progressScope && data.progressScope !== getProgressScopeKey()) return;
+  if (!data.progressScope && currentStudyGuide !== 'citizenship') return;
   state.knownCards = new Set(data.knownCards || []);
   state.masteredCards = new Set(data.masteredCards || []);
   state.correctStreak = data.correctStreak || {};
@@ -2528,6 +3229,7 @@ function applyProgressSnapshot(data) {
     profiles[idx].sessionHistory = state.sessionHistory.slice(-100);
     setProfiles(profiles);
   }
+  saveStudyProgressSnapshot();
   updateHomeProgress();
 }
 
@@ -2579,6 +3281,7 @@ async function saveCloudProgress() {
 function saveStorage(syncCloud = true) {
   try {
     if (!state.activeProfileId) return;
+    saveStudyProgressSnapshot();
     const profiles = getProfiles();
     const idx = profiles.findIndex(p => p.id === state.activeProfileId);
     if (idx === -1) return;
@@ -2643,6 +3346,7 @@ function showScreen(id) {
     el.classList.add('active');
     el.scrollTop = 0;
   }
+  closeMainMenu();
 }
 
 function goHome() {
@@ -2673,6 +3377,153 @@ function updateProfileIndicator() {
   if (!el) return;
   document.getElementById('pi-emoji').textContent = state.activeProfileEmoji || CURRENT_USER.emoji;
   document.getElementById('pi-name').textContent = state.activeProfileName || 'Player';
+  updateMenuActiveStates();
+}
+
+function toggleMainMenu() {
+  const menu = document.getElementById('main-menu');
+  const backdrop = document.getElementById('main-menu-backdrop');
+  const button = document.getElementById('profile-indicator');
+  const open = menu.classList.contains('hidden');
+  menu.classList.toggle('hidden', !open);
+  backdrop.classList.toggle('hidden', !open);
+  button.classList.toggle('menu-open', open);
+  button.setAttribute('aria-expanded', open ? 'true' : 'false');
+  updateMenuActiveStates();
+}
+
+function closeMainMenu() {
+  const menu = document.getElementById('main-menu');
+  const backdrop = document.getElementById('main-menu-backdrop');
+  const button = document.getElementById('profile-indicator');
+  if (!menu || menu.classList.contains('hidden')) return;
+  menu.classList.add('hidden');
+  backdrop.classList.add('hidden');
+  button.classList.remove('menu-open');
+  button.setAttribute('aria-expanded', 'false');
+}
+
+function updateMenuActiveStates() {
+  document.getElementById('menu-citizenship')?.classList.toggle('active', currentStudyGuide === 'citizenship');
+  document.getElementById('menu-contractors')?.classList.toggle('active', currentStudyGuide === 'contractors');
+}
+
+function chooseGuideFromMenu(guide) {
+  if (guide === currentStudyGuide) {
+    closeMainMenu();
+    goHome();
+    return;
+  }
+  setStudyGuide(guide);
+}
+
+function goHomeFromMenu() {
+  closeMainMenu();
+  goHome();
+}
+
+function showProgressFromMenu() {
+  closeMainMenu();
+  showProgressScreen();
+}
+
+function toggleInstallGuide() {
+  document.getElementById('install-guide')?.classList.toggle('hidden');
+}
+
+function setStudyGuide(guide) {
+  if (guide === currentStudyGuide) return;
+  saveStorage();
+  currentStudyGuide = guide;
+  localStorage.setItem('civics_current_study_guide', guide);
+  rebuildStudyData();
+  applyLocalStudyProgress();
+  updateStudyGuideUI();
+  goHome();
+}
+
+function setContractorExam(examId) {
+  if (!examId || examId === currentContractorExam) return;
+  saveStorage();
+  currentContractorExam = examId;
+  localStorage.setItem('civics_current_contractor_exam', examId);
+  rebuildStudyData();
+  applyLocalStudyProgress();
+  updateStudyGuideUI();
+  goHome();
+}
+
+function getActiveContractorExam() {
+  return (CONTRACTORS_STUDY.exams || []).find(exam => exam.id === currentContractorExam) || (CONTRACTORS_STUDY.exams || [])[0] || null;
+}
+
+function updateStudyGuideUI() {
+  const isContractors = currentStudyGuide === 'contractors';
+  document.body.classList.toggle('contractors-mode', isContractors);
+  document.getElementById('guide-citizenship-btn')?.classList.toggle('active', !isContractors);
+  document.getElementById('guide-contractors-btn')?.classList.toggle('active', isContractors);
+  document.getElementById('contractor-panel')?.classList.toggle('hidden', !isContractors);
+
+  const exam = getActiveContractorExam();
+  const heroIcon = document.getElementById('home-hero-icon');
+  const title = document.getElementById('home-title');
+  const subtitle = document.getElementById('home-subtitle');
+  const practiceDesc = document.getElementById('practice-mode-desc');
+  const flashcardDesc = document.getElementById('flashcard-mode-desc');
+  const categoryHeader = document.querySelector('#screen-category .header h2');
+  const progressHeader = document.querySelector('#screen-progress .header h2');
+
+  if (isContractors) {
+    if (heroIcon) {
+      heroIcon.classList.add('logo-mark');
+      heroIcon.innerHTML = '<img class="hero-logo-image" src="./RGCI%20Logo.svg" alt="RGCI logo">';
+    }
+    if (title) title.innerHTML = 'California Contractors <span>Study Guide</span>';
+    if (subtitle) subtitle.textContent = exam?.title || 'CSLB Topic Practice';
+    if (practiceDesc) practiceDesc.textContent = `${Math.min(PRACTICE_QUESTION_COUNT, TOTAL_QUESTIONS)} questions, CSLB-topic practice`;
+    if (flashcardDesc) flashcardDesc.textContent = `Review ${TOTAL_QUESTIONS} study items`;
+    if (categoryHeader) categoryHeader.textContent = 'Study by Topic';
+    if (progressHeader) progressHeader.textContent = "Javier Garcia's Contractor Dashboard";
+  } else {
+    if (heroIcon) {
+      heroIcon.classList.remove('logo-mark');
+      heroIcon.textContent = '🇺🇸';
+    }
+    if (title) title.innerHTML = 'U.S. Citizenship <span>Study Guide</span>';
+    if (subtitle) subtitle.textContent = '2025 Edition U.S. Civics Quiz';
+    if (practiceDesc) practiceDesc.textContent = '20 questions, full practice test';
+    if (flashcardDesc) flashcardDesc.textContent = `Review all ${TOTAL_QUESTIONS} questions at your pace`;
+    if (categoryHeader) categoryHeader.textContent = 'Study by Category';
+    if (progressHeader) progressHeader.textContent = "Javier Garcia's Dashboard";
+  }
+  renderContractorExamSelect();
+  updateMenuActiveStates();
+  updateHomeProgress();
+}
+
+function renderContractorExamSelect() {
+  const select = document.getElementById('contractor-exam-select');
+  if (!select) return;
+  select.innerHTML = (CONTRACTORS_STUDY.exams || []).map(exam =>
+    `<option value="${exam.id}" ${exam.id === currentContractorExam ? 'selected' : ''}>${exam.icon} ${exam.title}</option>`
+  ).join('');
+}
+
+function showSourcesModal() {
+  const list = document.getElementById('sources-list');
+  list.innerHTML = (CONTRACTORS_STUDY.sources || []).map(source => `
+    <div class="source-item">
+      <a href="${source.url}" target="_blank" rel="noopener">${source.title}</a>
+      <p>${source.publisher || 'CSLB'}${source.notes ? ' · ' + source.notes : ''}</p>
+    </div>
+  `).join('');
+  document.getElementById('sources-modal').classList.remove('hidden');
+}
+
+function closeSourcesModal(e) {
+  if (e === null || e.target === document.getElementById('sources-modal')) {
+    document.getElementById('sources-modal').classList.add('hidden');
+  }
 }
 
 /* ============================================================
@@ -2767,7 +3618,9 @@ function renderQuestion(containerId, q, onAnswer, isSpeed = false) {
   }
 
   // Generate choices
-  const choices = generateChoices(q);
+  const choices = Array.isArray(q.choices) && q.choices.length >= 4
+    ? shuffle([...q.choices]).slice(0, 4)
+    : generateChoices(q);
   const choicesList = document.createElement('div');
   choicesList.className = 'choices-list';
 
@@ -2805,10 +3658,11 @@ function renderQuestion(containerId, q, onAnswer, isSpeed = false) {
       // Feedback toast
       if (!isSpeed) {
         const toast = document.getElementById('practice-feedback-toast') || createFeedbackToast(container);
-        toast.className = 'feedback-toast show ' + (isCorrect ? 'correct-toast' : 'wrong-toast');
+        const explanation = q.explanation ? `<div class="feedback-explanation">${q.explanation}</div>` : '';
+        toast.className = 'feedback-toast show ' + (q.explanation ? 'with-explanation ' : '') + (isCorrect ? 'correct-toast' : 'wrong-toast');
         toast.innerHTML = isCorrect
-          ? `<span>✓</span> <span>Correct! Well done!</span>`
-          : `<span>✗</span> <span>The answer is: <strong>${q.primary}</strong></span>`;
+          ? `<div class="feedback-line"><span>✓</span> <span>Correct! Well done!</span></div>${explanation}`
+          : `<div class="feedback-line"><span>✗</span> <span>The answer is: <strong>${q.primary}</strong></span></div>${explanation}`;
         container.insertBefore(toast, nextBtn);
       }
 
@@ -2933,7 +3787,9 @@ function renderPracticeQuestion() {
 function showPracticeResults() {
   const score = state.practiceScore;
   const total = state.practiceQuestions.length;
-  const passing = total === PRACTICE_QUESTION_COUNT ? PASSING_SCORE_2025 : Math.ceil(total * 0.6);
+  const passing = currentStudyGuide === 'citizenship' && total === PRACTICE_QUESTION_COUNT
+    ? PASSING_SCORE_2025
+    : Math.ceil(total * 0.7);
   const passed = score >= passing;
 
   // Update best score
@@ -2943,6 +3799,8 @@ function showPracticeResults() {
 
   recordSession({
     type: 'practice',
+    studyGuide: currentStudyGuide,
+    contractorExam: currentStudyGuide === 'contractors' ? currentContractorExam : null,
     date: new Date().toISOString(),
     score: score,
     total: total,
@@ -2962,7 +3820,9 @@ function showPracticeResults() {
   document.getElementById('results-score-num').textContent = score;
   document.getElementById('results-total').textContent = ` / ${total}`;
   document.getElementById('results-subtitle').textContent =
-    passed ? 'You passed the citizenship test!' : `You need ${passing} correct to pass.`;
+    passed
+      ? (currentStudyGuide === 'contractors' ? 'Solid work on this contractor study set!' : 'You passed the citizenship test!')
+      : `You need ${passing} correct to pass.`;
 
   // Stars (0–3) — scale to percentage
   const pct = score / total;
@@ -2979,7 +3839,7 @@ function showPracticeResults() {
 
   // Encouragement — based on percentage
   let msg;
-  if (pct >= 1.0) msg = "Perfect score! You're ready! 🇺🇸";
+  if (pct >= 1.0) msg = currentStudyGuide === 'contractors' ? "Perfect score! Strong command of this topic." : "Perfect score! You're ready! 🇺🇸";
   else if (pct >= 0.9) msg = "Outstanding! Almost perfect — you're going to ace the real test!";
   else if (pct >= 0.8) msg = "Excellent! You're well prepared. Keep it up!";
   else if (pct >= 0.7) msg = "Good work! You're on the right track.";
@@ -3075,7 +3935,7 @@ function renderFlashcard() {
 
   // Front
   document.getElementById('fc-front-category').textContent = q.category;
-  document.getElementById('fc-front-number').textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+  document.getElementById('fc-front-number').textContent = `Question ${i + 1} of ${total}`;
   document.getElementById('fc-front-question').textContent = q.question;
 
   // Back
@@ -3089,10 +3949,12 @@ function renderFlashcard() {
     variableNote.classList.remove('hidden');
   } else {
     document.getElementById('fc-variable-note').classList.add('hidden');
-    if (q.answers.length === 1) {
-      answerHTML = q.answers[0];
+    if (q.explanation) {
+      answerHTML = `<span>${escapeHTML(q.primary)}</span><p class="fc-explanation">${escapeHTML(q.explanation)}</p>${q.source ? `<div class="fc-source">Reference: ${getSourceHTML(q.source)}</div>` : ''}`;
+    } else if (q.answers.length === 1) {
+      answerHTML = escapeHTML(q.answers[0]);
     } else {
-      answerHTML = '<ul>' + q.answers.map(a => `<li>${a}</li>`).join('') + '</ul>';
+      answerHTML = '<ul>' + q.answers.map(a => `<li>${escapeHTML(a)}</li>`).join('') + '</ul>';
     }
   }
   document.getElementById('fc-back-answer').innerHTML = answerHTML;
@@ -3270,6 +4132,8 @@ function showSpeedResults() {
 
   recordSession({
     type: 'speed',
+    studyGuide: currentStudyGuide,
+    contractorExam: currentStudyGuide === 'contractors' ? currentContractorExam : null,
     date: new Date().toISOString(),
     score: score,
     timeLimit: 60
@@ -4033,11 +4897,8 @@ async function selectProfile(profile) {
   state.activeProfileId = profile.id;
   state.activeProfileName = profile.name;
   state.activeProfileEmoji = profile.emoji;
-  state.knownCards = new Set(profile.knownCards || []);
-  state.masteredCards = new Set(profile.masteredCards || []);
-  state.correctStreak = profile.correctStreak || {};
-  state.bestScore = profile.bestScore;
-  state.sessionHistory = profile.sessionHistory || [];
+  applyLocalStudyProgress(profile);
+  updateStudyGuideUI();
   updateHomeProgress();
   showScreen('home');
   await loadCloudProgress();

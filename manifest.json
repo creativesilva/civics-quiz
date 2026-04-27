@@ -1,7 +1,7 @@
 {
-  "name": "U.S. Citizenship Study Guide & U.S. Civics Quiz",
-  "short_name": "Citizenship",
-  "description": "Practice the 2025 U.S. Citizenship Naturalization Civics Test",
+  "name": "Study Guide",
+  "short_name": "Study Guide",
+  "description": "Practice U.S. citizenship and California contractor study guide questions",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000a1f",
