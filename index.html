@@ -165,6 +165,12 @@
       width: 100%;
       max-width: 480px;
     }
+    #screen-home > .progress-link-btn,
+    #screen-home > .mastery-bar-wrap,
+    #screen-home > .home-footer {
+      width: 448px !important;
+      max-width: calc(100% - 32px) !important;
+    }
 
     .home-hero {
       text-align: center;
@@ -225,7 +231,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      padding: 0 16px 10px;
+      padding: 0 0 10px;
     }
     .mode-card {
       background: var(--glass-bg);
@@ -271,7 +277,8 @@
     .home-footer {
       margin-top: auto;
       text-align: center;
-      padding: 6px 16px 12px;
+      width: min(calc(100% - 32px), 448px);
+      padding: 6px 0 12px;
     }
     .progress-summary {
       background: var(--glass-bg);
@@ -1575,7 +1582,8 @@
 
     /* Mastery progress on home */
     .mastery-bar-wrap {
-      padding: 0 16px 8px;
+      width: min(calc(100% - 32px), 448px);
+      padding: 0 0 8px;
       text-align: center;
     }
     .mastery-bar-label {
@@ -1606,8 +1614,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      width: calc(100% - 32px);
-      max-width: 448px;
+      width: min(calc(100% - 32px), 448px);
       margin: 0 0 8px;
       padding: 12px 16px;
       background: var(--glass-bg);
@@ -1851,15 +1858,21 @@
       .star-dot { width: 6px; height: 6px; }
 
       /* Mode grid */
-      .mode-grid { gap: 10px; padding: 0 14px 10px; }
+      .mode-grid { gap: 10px; padding: 0 0 10px; }
       .mode-card { padding: 12px 10px; }
       .mode-card .mode-icon { font-size: 28px; margin-bottom: 6px; }
       .mode-card .mode-title { font-size: 13px; margin-bottom: 3px; }
       .mode-card .mode-desc { font-size: 11px; }
 
       /* Home footer */
-      .progress-link-btn { width: calc(100% - 28px); max-width: 452px; }
-      .home-footer { padding: 6px 14px 10px; }
+      #screen-home > .progress-link-btn,
+      #screen-home > .mastery-bar-wrap,
+      #screen-home > .home-footer {
+        width: 452px !important;
+        max-width: calc(100% - 28px) !important;
+      }
+      .mastery-bar-wrap { padding-left: 0; padding-right: 0; }
+      .home-footer { padding: 6px 0 10px; }
       .progress-summary { padding: 8px 12px; font-size: 12px; }
 
       /* Progress bar */
