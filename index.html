@@ -8,8 +8,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Citizenship Guide" />
   <meta name="description" content="Practice the 2025 U.S. Citizenship Naturalization Civics Test" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <link rel="manifest" href="./manifest.json" />
-  <link rel="apple-touch-icon" href="./icon-192.svg" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
   <title>U.S. Citizenship Study Guide &amp; U.S. Civics Quiz</title>
 
   <style>
@@ -2105,23 +2108,26 @@
     }
     .menu-profile-card {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      padding: 10px 12px 14px;
+      gap: 9px;
+      padding: 10px 12px 12px;
       margin-bottom: 8px;
       text-align: center;
     }
     .menu-profile-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 12px;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
       display: grid;
       place-items: center;
       flex-shrink: 0;
-      font-size: 22px;
+      font-size: 19px;
       background: rgba(255,255,255,0.06);
+    }
+    .menu-profile-card .menu-row-main {
+      flex: 0 1 auto;
     }
     .menu-profile-name {
       display: block;
@@ -2290,13 +2296,15 @@
        ============================================================ */
     #screen-progress {
       align-items: center;
+      justify-content: flex-start;
+      overflow-y: auto;
     }
     #screen-progress > * { width: 100%; max-width: 480px; }
     .progress-screen-content {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 16px 18px 32px;
+      flex: 0 0 auto;
+      min-height: auto;
+      overflow: visible;
+      padding: 16px 18px calc(var(--safe-bot) + 72px);
       display: flex;
       flex-direction: column;
       gap: 22px;
@@ -3079,7 +3087,7 @@
      ================================================================ -->
 <script>
 /* Quick inline SVG icons — written to file references via data URIs */
-/* (For GitHub Pages, icon-192.svg and icon-512.svg are separate files) */
+/* (For GitHub Pages, install icons are provided as separate files) */
 </script>
 
 <script src="./questions-2025.js"></script>
@@ -5256,7 +5264,32 @@ function dismissInstall() {
    ============================================================ */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => {
+    let refreshing = false;
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+
+    navigator.serviceWorker.register('./sw.js').then(registration => {
+      registration.update();
+
+      if (registration.waiting) {
+        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      }
+
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        if (!newWorker) return;
+
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            newWorker.postMessage({ type: 'SKIP_WAITING' });
+          }
+        });
+      });
+    }).catch(err => {
       console.log('SW registration failed:', err);
     });
   });
@@ -5285,7 +5318,6 @@ document.addEventListener('keydown', e => {
 });
 </script>
 
-<!-- SVG Icons (also save as separate files) -->
-<!-- icon-192.svg and icon-512.svg are separate files in the same directory -->
+<!-- Install icons are separate files in the same directory -->
 </body>
 </html>
