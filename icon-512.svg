@@ -1,29 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="110" fill="#002868"/>
-  <g>
-    <rect x="64" y="96" width="384" height="24.6" rx="4" fill="#BF0A30"/>
-    <rect x="64" y="120.6" width="384" height="24.6" fill="#FFFFFF"/>
-    <rect x="64" y="145.2" width="384" height="24.6" fill="#BF0A30"/>
-    <rect x="64" y="169.8" width="384" height="24.6" fill="#FFFFFF"/>
-    <rect x="64" y="194.4" width="384" height="24.6" fill="#BF0A30"/>
-    <rect x="64" y="219" width="384" height="24.6" fill="#FFFFFF"/>
-    <rect x="64" y="243.6" width="384" height="24.6" fill="#BF0A30"/>
-    <rect x="64" y="268.2" width="384" height="24.6" fill="#FFFFFF"/>
-    <rect x="64" y="292.8" width="384" height="24.6" fill="#BF0A30"/>
-    <rect x="64" y="317.4" width="384" height="24.6" fill="#FFFFFF"/>
-    <rect x="64" y="342" width="384" height="24.6" fill="#BF0A30"/>
-    <rect x="64" y="366.6" width="384" height="24.6" fill="#FFFFFF"/>
-    <rect x="64" y="391.2" width="384" height="24.8" rx="4" fill="#BF0A30"/>
-  </g>
-  <rect x="64" y="96" width="166" height="172" rx="4" fill="#002868"/>
-  <g fill="#FFFFFF">
-    <circle cx="88" cy="118" r="6"/><circle cx="112" cy="118" r="6"/><circle cx="136" cy="118" r="6"/><circle cx="160" cy="118" r="6"/><circle cx="184" cy="118" r="6"/><circle cx="208" cy="118" r="6"/>
-    <circle cx="100" cy="138" r="6"/><circle cx="124" cy="138" r="6"/><circle cx="148" cy="138" r="6"/><circle cx="172" cy="138" r="6"/><circle cx="196" cy="138" r="6"/>
-    <circle cx="88" cy="158" r="6"/><circle cx="112" cy="158" r="6"/><circle cx="136" cy="158" r="6"/><circle cx="160" cy="158" r="6"/><circle cx="184" cy="158" r="6"/><circle cx="208" cy="158" r="6"/>
-    <circle cx="100" cy="178" r="6"/><circle cx="124" cy="178" r="6"/><circle cx="148" cy="178" r="6"/><circle cx="172" cy="178" r="6"/><circle cx="196" cy="178" r="6"/>
-    <circle cx="88" cy="198" r="6"/><circle cx="112" cy="198" r="6"/><circle cx="136" cy="198" r="6"/><circle cx="160" cy="198" r="6"/><circle cx="184" cy="198" r="6"/><circle cx="208" cy="198" r="6"/>
-    <circle cx="100" cy="218" r="6"/><circle cx="124" cy="218" r="6"/><circle cx="148" cy="218" r="6"/><circle cx="172" cy="218" r="6"/><circle cx="196" cy="218" r="6"/>
-    <circle cx="88" cy="238" r="6"/><circle cx="112" cy="238" r="6"/><circle cx="136" cy="238" r="6"/><circle cx="160" cy="238" r="6"/><circle cx="184" cy="238" r="6"/><circle cx="208" cy="238" r="6"/>
-    <circle cx="100" cy="258" r="6"/><circle cx="124" cy="258" r="6"/><circle cx="148" cy="258" r="6"/><circle cx="172" cy="258" r="6"/><circle cx="196" cy="258" r="6"/>
-  </g>
+  <rect width="512" height="512" rx="112" fill="#050505"/>
+  <rect x="22" y="22" width="468" height="468" rx="96" fill="#0b0b0b" stroke="#fbbc10" stroke-opacity="0.45" stroke-width="8"/>
+  <image href="./RGCI%20Logo.svg" x="70" y="74" width="372" height="364" preserveAspectRatio="xMidYMid meet"/>
 </svg>

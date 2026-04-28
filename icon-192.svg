@@ -1,26 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
-  <rect width="192" height="192" rx="42" fill="#002868"/>
-  <g>
-    <rect x="24" y="36" width="144" height="9.2" rx="2" fill="#BF0A30"/>
-    <rect x="24" y="45.2" width="144" height="9.2" fill="#FFFFFF"/>
-    <rect x="24" y="54.4" width="144" height="9.2" fill="#BF0A30"/>
-    <rect x="24" y="63.6" width="144" height="9.2" fill="#FFFFFF"/>
-    <rect x="24" y="72.8" width="144" height="9.2" fill="#BF0A30"/>
-    <rect x="24" y="82" width="144" height="9.2" fill="#FFFFFF"/>
-    <rect x="24" y="91.2" width="144" height="9.2" fill="#BF0A30"/>
-    <rect x="24" y="100.4" width="144" height="9.2" fill="#FFFFFF"/>
-    <rect x="24" y="109.6" width="144" height="9.2" fill="#BF0A30"/>
-    <rect x="24" y="118.8" width="144" height="9.2" fill="#FFFFFF"/>
-    <rect x="24" y="128" width="144" height="9.2" fill="#BF0A30"/>
-    <rect x="24" y="137.2" width="144" height="9.2" fill="#FFFFFF"/>
-    <rect x="24" y="146.4" width="144" height="9.6" rx="2" fill="#BF0A30"/>
-  </g>
-  <rect x="24" y="36" width="62" height="64.4" rx="2" fill="#002868"/>
-  <g fill="#FFFFFF">
-    <circle cx="38" cy="48" r="3"/><circle cx="55" cy="48" r="3"/><circle cx="72" cy="48" r="3"/>
-    <circle cx="46" cy="58" r="3"/><circle cx="63" cy="58" r="3"/>
-    <circle cx="38" cy="68" r="3"/><circle cx="55" cy="68" r="3"/><circle cx="72" cy="68" r="3"/>
-    <circle cx="46" cy="78" r="3"/><circle cx="63" cy="78" r="3"/>
-    <circle cx="38" cy="88" r="3"/><circle cx="55" cy="88" r="3"/><circle cx="72" cy="88" r="3"/>
-  </g>
+  <rect width="192" height="192" rx="42" fill="#050505"/>
+  <rect x="8" y="8" width="176" height="176" rx="36" fill="#0b0b0b" stroke="#fbbc10" stroke-opacity="0.45" stroke-width="3"/>
+  <image href="./RGCI%20Logo.svg" x="26" y="28" width="140" height="136" preserveAspectRatio="xMidYMid meet"/>
 </svg>
